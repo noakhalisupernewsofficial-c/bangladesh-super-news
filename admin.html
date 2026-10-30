@@ -485,7 +485,7 @@ $('logoutBtn').addEventListener('click',async()=>{
 });
 
 supabase.auth.onAuthStateChange(()=>{
-  updateView();
+  setTimeout(updateView,0);
 });
 
 updateView();
