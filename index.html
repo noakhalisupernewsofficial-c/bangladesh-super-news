@@ -1,227 +1,232 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>বাংলাদেশ সুপার নিউজ</title>
+<meta name="description" content="বাংলাদেশ সুপার নিউজ - সত্যের পথে, মানুষ ও দেশের সাথে।">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f3f5f7;color:#20242a;font-family:Arial,sans-serif}
-header{background:#c90016;color:#fff;text-align:center;padding:22px 12px}
-header h1{margin:0;font-size:30px}
-header p{margin:7px 0 0}
-nav{display:flex;gap:7px;overflow-x:auto;white-space:nowrap;background:#171717;padding:12px}
-nav a{color:white;text-decoration:none;padding:8px;font-size:14px}
-.ticker{background:white;padding:12px;border-bottom:2px solid #c90016;font-weight:bold}
-main{max-width:1100px;margin:auto;padding:15px}
-.intro{background:white;border-radius:8px;padding:14px;line-height:1.7}
-section{margin:24px 0;scroll-margin-top:10px}
-h2{background:#c90016;color:white;padding:12px;border-radius:6px;font-size:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.card{background:white;border-radius:8px;overflow:hidden;box-shadow:0 2px 7px #ddd}
-.card img{display:block;width:100%;height:165px;object-fit:cover;background:#eee}
-.body{padding:12px}
-.tag{color:#c90016;font-weight:bold;font-size:13px}
-.card h3{margin:7px 0;font-size:18px}
-.card p{font-size:14px;line-height:1.7;color:#555;white-space:pre-wrap}
-.meta{font-size:12px;color:#777}
-footer{background:#171717;color:white;text-align:center;padding:22px;margin-top:25px}
-.admin-wrap{max-width:760px;margin:25px auto;padding:15px}
-.panel{background:white;border-radius:10px;padding:16px;box-shadow:0 2px 8px #ddd}
-.panel h2{margin-top:0}
-label{display:block;font-weight:bold;margin:12px 0 6px}
-input,textarea,select{width:100%;padding:11px;border:1px solid #bbb;border-radius:6px;font:inherit}
-textarea{min-height:130px;resize:vertical}
-button{border:0;background:#c90016;color:white;padding:11px 16px;border-radius:6px;font-size:15px;margin-top:12px}
-button.secondary{background:#333}
-button:disabled{opacity:.6}
-#adminPanel{display:none}
-#status{line-height:1.6;color:#333;white-space:pre-wrap}
-.small{font-size:13px;color:#666;line-height:1.6}
+body{margin:0;background:#f3f5f9;color:#172033;font-family:Arial,"Noto Sans Bengali",sans-serif}
+a{text-decoration:none;color:inherit}
+.top{background:#101d35;color:#fff;padding:9px 5%;font-size:13px;display:flex;justify-content:space-between}
+header{background:white;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{background:#c90024;color:white;font-size:25px;font-weight:bold;padding:12px;border-radius:12px}
+.brand h1{margin:0;color:#b90024;font-size:25px}
+.brand p{margin:4px 0 0;color:#596579;font-size:13px}
+.admin{background:#142440;color:white;padding:11px 15px;border-radius:8px;font-size:14px}
+nav{background:#b90024;color:white;padding:0 5%;display:flex;overflow-x:auto;white-space:nowrap}
+nav a{padding:15px 17px;font-weight:bold;font-size:14px}
+nav a:hover{background:#8e001c}
+.breaking{background:#fff;display:flex;align-items:stretch;overflow:hidden;border-bottom:1px solid #eee}
+.breaking-label{background:#d00028;color:white;padding:13px 15px;font-weight:bold;white-space:nowrap;display:flex;align-items:center}
+.ticker{overflow:hidden;flex:1;display:flex;align-items:center;min-width:0}
+.ticker-track{display:inline-block;white-space:nowrap;padding-left:100%;animation:scrollnews 24s linear infinite;color:#202d43;font-weight:bold;font-size:14px}
+.ticker-track span{padding-right:65px}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker.paused .ticker-track{animation-play-state:paused}
+.pause-btn{border:0;background:#f0f1f4;color:#26334a;padding:0 12px;cursor:pointer;font-size:12px;white-space:nowrap}
+@keyframes scrollnews{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+.container{max-width:1150px;margin:25px auto;padding:0 15px}
+.hero{display:grid;grid-template-columns:1.6fr 1fr;gap:18px}
+.feature{background:#142440;color:white;border-radius:12px;overflow:hidden;min-height:300px;display:flex;flex-direction:column;justify-content:end;padding:25px;background-image:linear-gradient(0deg,rgba(0,0,0,.85),rgba(0,0,0,.05)),url('https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80');background-size:cover;background-position:center}
+.tag{background:#c90024;color:white;padding:6px 10px;border-radius:4px;font-size:12px;width:max-content}
+.feature h2{font-size:27px;line-height:1.5;margin:12px 0}
+.feature p{margin:0;color:#e4e8ef;font-size:13px}
+.side{display:grid;gap:15px}
+.side-card{background:white;border-radius:10px;padding:18px;border-left:4px solid #c90024}
+.side-card small{color:#b90024;font-weight:bold}
+.side-card h3{font-size:17px;line-height:1.6;margin:8px 0}
+.section-title{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #dce1e9;margin:30px 0 18px}
+.section-title h2{font-size:21px;margin:0;padding:0 0 10px;border-bottom:3px solid #c90024}
+.section-title span{color:#b90024;font-size:13px}
+.search{width:100%;padding:13px;border:1px solid #dce1e9;border-radius:8px;font-size:15px;margin-top:12px}
+.categories{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
+.categories button{border:1px solid #dce1e9;background:white;border-radius:20px;padding:9px 15px;color:#26334a;cursor:pointer}
+.categories button.active,.categories button:hover{background:#b90024;color:white;border-color:#b90024}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.news{background:white;border-radius:11px;overflow:hidden;box-shadow:0 3px 14px #18243a0c}
+.photo{height:155px;background:#e4e8ef;display:flex;align-items:center;justify-content:center;color:#9aa4b4;font-size:14px}
+.news .body{padding:16px}
+.news small{color:#b90024;font-weight:bold}
+.news h3{font-size:17px;line-height:1.6;margin:9px 0}
+.news p{font-size:13px;line-height:1.7;color:#687386;margin:0}
+footer{background:#101d35;color:#dce3ef;padding:30px 5%;margin-top:45px;text-align:center}
+footer h2{color:white;margin:0 0 8px}
+footer p{font-size:13px;line-height:1.8}
+@media(max-width:700px){
+header{padding:14px 4%}
+.brand h1{font-size:19px}
+.brand p{font-size:11px}
+.logo{font-size:20px;padding:10px}
+.admin{padding:9px;font-size:12px}
+.hero{grid-template-columns:1fr}
+.feature{min-height:260px}
+.grid{grid-template-columns:1fr 1fr;gap:10px}
+.news .photo{height:110px}
+.news .body{padding:11px}
+.news h3{font-size:14px}
+.container{margin:17px auto}
+.feature h2{font-size:22px}
+.breaking-label{padding:11px 9px;font-size:12px}
+.pause-btn{padding:0 8px;font-size:11px}
+}
+@media(max-width:390px){.grid{grid-template-columns:1fr}.top{font-size:11px}}
 </style>
 </head>
 <body>
-<header><h1>বাংলাদেশ সুপার নিউজ</h1><p>সত্যের পথে, দেশের সাথে</p></header>
-<nav>
-<a href="#home">প্রচ্ছদ</a><a href="#national">জাতীয়</a><a href="#dhaka">ঢাকা</a><a href="#chattogram">চট্টগ্রাম</a><a href="#rajshahi">রাজশাহী</a><a href="#khulna">খুলনা</a><a href="#barishal">বরিশাল</a><a href="#sylhet">সিলেট</a><a href="#rangpur">রংপুর</a><a href="#mymensingh">ময়মনসিংহ</a><a href="#world">বিশ্ব</a><a href="#sports">খেলাধুলা</a><a href="#admin">অ্যাডমিন</a>
-</nav>
-<div class="ticker">🔴 বাংলাদেশ সুপার নিউজ — সত্যের পথে, দেশের সাথে</div>
 
-<main id="home">
-<div class="intro"><b>বাংলাদেশ সুপার নিউজ</b> — বাংলাদেশের আট বিভাগের সংবাদ, জাতীয় ও আন্তর্জাতিক খবর এবং খেলাধুলার আপডেট। প্রকাশিত সংবাদ এখানে দেখা যাবে।</div>
-<div id="newsSections"></div>
+<div class="top">
+<span>বাংলাদেশের সংবাদ, সবার আগে</span>
+<span id="today"></span>
+</div>
+
+<header>
+<div class="brand">
+<div class="logo">BSN</div>
+<div>
+<h1>বাংলাদেশ সুপার নিউজ</h1>
+<p>সত্যের পথে, মানুষ ও দেশের সাথে।</p>
+</div>
+</div>
+<a class="admin" href="admin.html">অ্যাডমিন লগইন</a>
+</header>
+
+<nav>
+<a href="#">প্রচ্ছদ</a>
+<a href="#national">জাতীয়</a>
+<a href="#politics">রাজনীতি</a>
+<a href="#country">সারাদেশ</a>
+<a href="#world">আন্তর্জাতিক</a>
+<a href="#sports">খেলাধুলা</a>
+<a href="#technology">প্রযুক্তি</a>
+<a href="#entertainment">বিনোদন</a>
+</nav>
+
+<!-- ব্রেকিং নিউজ বার -->
+<div class="breaking">
+<div class="breaking-label">🔴 ব্রেকিং নিউজ</div>
+<div class="ticker" id="ticker">
+<div class="ticker-track">
+<span>বাংলাদেশ সুপার নিউজে আপনাকে স্বাগতম। দেশের সর্বশেষ ও গুরুত্বপূর্ণ সংবাদ জানতে আমাদের সাথেই থাকুন।</span>
+<span>সত্যের পথে, মানুষ ও দেশের সাথে — বাংলাদেশ সুপার নিউজ।</span>
+</div>
+</div>
+<button class="pause-btn" id="pauseBtn" onclick="toggleTicker()">থামান</button>
+</div>
+
+<main class="container">
+
+<section class="hero">
+<div class="feature">
+<span class="tag">প্রধান খবর</span>
+<h2>সত্য সংবাদ, সচেতন সমাজ ও সুন্দর বাংলাদেশের প্রত্যয়ে আমাদের যাত্রা</h2>
+<p>বাংলাদেশ সুপার নিউজ • সত্যের পথে, মানুষ ও দেশের সাথে।</p>
+</div>
+
+<div class="side">
+<div class="side-card">
+<small>জাতীয় সংবাদ</small>
+<h3>দেশের গুরুত্বপূর্ণ খবর জানতে চোখ রাখুন বাংলাদেশ সুপার নিউজে</h3>
+</div>
+<div class="side-card">
+<small>সারাদেশ</small>
+<h3>আপনার এলাকার খবর ও জনজীবনের নানা তথ্য তুলে ধরতে আমরা প্রস্তুত</h3>
+</div>
+<div class="side-card">
+<small>বিশেষ প্রতিবেদন</small>
+<h3>তথ্য যাচাই করে সংবাদ প্রকাশই আমাদের অঙ্গীকার</h3>
+</div>
+</div>
+</section>
+
+<div class="section-title">
+<h2>খবর খুঁজুন</h2>
+<span>আপনার পছন্দের সংবাদ</span>
+</div>
+
+<input class="search" id="search" placeholder="খবরের শিরোনাম লিখে খুঁজুন..." oninput="filterNews()">
+
+<div class="categories">
+<button class="active" onclick="chooseCategory('সব',this)">সব খবর</button>
+<button onclick="chooseCategory('জাতীয়',this)">জাতীয়</button>
+<button onclick="chooseCategory('রাজনীতি',this)">রাজনীতি</button>
+<button onclick="chooseCategory('সারাদেশ',this)">সারাদেশ</button>
+<button onclick="chooseCategory('খেলাধুলা',this)">খেলাধুলা</button>
+<button onclick="chooseCategory('প্রযুক্তি',this)">প্রযুক্তি</button>
+</div>
+
+<div class="section-title">
+<h2>সর্বশেষ খবর</h2>
+<span>নিয়মিত আপডেট</span>
+</div>
+
+<section class="grid" id="newsGrid">
+<article class="news" data-category="জাতীয়">
+<div class="photo">সংবাদের ছবি</div>
+<div class="body"><small>জাতীয়</small><h3>এখানে নতুন খবরের শিরোনাম প্রকাশিত হবে</h3><p>সংবাদের সংক্ষিপ্ত বিবরণ এখানে দেখা যাবে।</p></div>
+</article>
+<article class="news" data-category="সারাদেশ">
+<div class="photo">সংবাদের ছবি</div>
+<div class="body"><small>সারাদেশ</small><h3>সারাদেশের গুরুত্বপূর্ণ সংবাদ এখানে প্রকাশিত হবে</h3><p>আপনার এলাকার খবর জানতে আমাদের সাথেই থাকুন।</p></div>
+</article>
+<article class="news" data-category="রাজনীতি">
+<div class="photo">সংবাদের ছবি</div>
+<div class="body"><small>রাজনীতি</small><h3>রাজনীতি ও দেশের নানা খবর জানতে চোখ রাখুন</h3><p>তথ্য যাচাই করা সংবাদ প্রকাশ আমাদের লক্ষ্য।</p></div>
+</article>
+<article class="news" data-category="খেলাধুলা">
+<div class="photo">সংবাদের ছবি</div>
+<div class="body"><small>খেলাধুলা</small><h3>খেলাধুলার সর্বশেষ খবর পাবেন এখানে</h3><p>দেশ-বিদেশের ক্রীড়াঙ্গনের খবর।</p></div>
+</article>
+<article class="news" data-category="প্রযুক্তি">
+<div class="photo">সংবাদের ছবি</div>
+<div class="body"><small>প্রযুক্তি</small><h3>প্রযুক্তি জগতের নতুন খবর ও আপডেট</h3><p>প্রযুক্তির নানা বিষয় সহজ ভাষায়।</p></div>
+</article>
+<article class="news" data-category="জাতীয়">
+<div class="photo">সংবাদের ছবি</div>
+<div class="body"><small>জাতীয়</small><h3>দেশের খবর সবার আগে জানতে আমাদের সাথেই থাকুন</h3><p>বাংলাদেশ সুপার নিউজের সঙ্গে থাকুন।</p></div>
+</article>
+</section>
+
 </main>
 
-<div class="admin-wrap" id="admin">
-<div class="panel">
-<h2>অ্যাডমিন লগইন</h2>
-<p class="small">শুধু অনুমোদিত অ্যাডমিন নিজের Supabase অ্যাকাউন্ট দিয়ে প্রবেশ করতে পারবেন।</p>
-<div id="loginPanel">
-<label for="email">ইমেইল</label><input id="email" type="email" autocomplete="username" placeholder="অ্যাডমিন ইমেইল">
-<label for="password">পাসওয়ার্ড</label><input id="password" type="password" autocomplete="current-password" placeholder="পাসওয়ার্ড">
-<button id="loginBtn">লগইন</button>
-</div>
-<div id="adminPanel">
-<p id="signedIn"></p>
-<h2>নতুন সংবাদ প্রকাশ</h2>
-<label for="title">সংবাদের শিরোনাম</label><input id="title" maxlength="200" placeholder="সংবাদের শিরোনাম লিখুন">
-<label for="category">বিভাগ</label>
-<select id="category">
-<option value="জাতীয়">জাতীয়</option><option value="ঢাকা">ঢাকা</option><option value="চট্টগ্রাম">চট্টগ্রাম</option><option value="রাজশাহী">রাজশাহী</option><option value="খুলনা">খুলনা</option><option value="বরিশাল">বরিশাল</option><option value="সিলেট">সিলেট</option><option value="রংপুর">রংপুর</option><option value="ময়মনসিংহ">ময়মনসিংহ</option><option value="বিশ্ব">বিশ্ব</option><option value="খেলাধুলা">খেলাধুলা</option>
-</select>
-<label for="content">সংবাদের বিস্তারিত</label><textarea id="content" placeholder="সংবাদের বিস্তারিত লিখুন"></textarea>
-<label for="imageFile">ছবি (JPG/JPEG)</label><input id="imageFile" type="file" accept="image/jpeg">
-<label><input id="published" type="checkbox" checked style="width:auto"> সঙ্গে সঙ্গে প্রকাশ করুন</label>
-<button id="publishBtn">সংবাদ প্রকাশ</button>
-<button id="logoutBtn" class="secondary">লগআউট</button>
-</div>
-<p id="status" role="status"></p>
-</div>
-</div>
+<footer>
+<h2>বাংলাদেশ সুপার নিউজ</h2>
+<p>সত্যের পথে, মানুষ ও দেশের সাথে।</p>
+<p>সত্য, নিরপেক্ষতা ও দায়িত্বশীল সাংবাদিকতায় আমাদের অঙ্গীকার।</p>
+<p>© <span id="year"></span> বাংলাদেশ সুপার নিউজ — সর্বস্বত্ব সংরক্ষিত</p>
+</footer>
 
-<footer><b>বাংলাদেশ সুপার নিউজ</b><p>সত্যের পথে, দেশের সাথে</p><small>© 2026 Bangladesh Super News</small></footer>
+<script>
+document.getElementById('today').textContent=new Date().toLocaleDateString('bn-BD');
+document.getElementById('year').textContent=new Date().getFullYear();
 
-<script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+let selected='সব';
 
-const SUPABASE_URL = 'https://ousmshqqmudffvnxufhp.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_QPh6xZEXnjRB8M0B0F4fKw_HXlXLr4c';
-const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-
-const categories = [
-  ['national','জাতীয়','জাতীয়'],['dhaka','ঢাকা','ঢাকা'],['chattogram','চট্টগ্রাম','চট্টগ্রাম'],
-  ['rajshahi','রাজশাহী','রাজশাহী'],['khulna','খুলনা','খুলনা'],['barishal','বরিশাল','বরিশাল'],
-  ['sylhet','সিলেট','সিলেট'],['rangpur','রংপুর','রংপুর'],['mymensingh','ময়মনসিংহ','ময়মনসিংহ'],
-  ['world','বিশ্ব','বিশ্ব'],['sports','খেলাধুলা','খেলাধুলা']
-];
-const sections = document.getElementById('newsSections');
-const statusEl = document.getElementById('status');
-const loginPanel = document.getElementById('loginPanel');
-const adminPanel = document.getElementById('adminPanel');
-
-function safeText(tag, text, className) {
-  const el = document.createElement(tag);
-  if (className) el.className = className;
-  el.textContent = text ?? '';
-  return el;
+function chooseCategory(cat,btn){
+selected=cat;
+document.querySelectorAll('.categories button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+filterNews();
 }
-function buildSections() {
-  sections.replaceChildren();
-  for (const [id,label,category] of categories) {
-    const section = document.createElement('section');
-    section.id = id;
-    section.append(safeText('h2', label + ' সংবাদ'));
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    grid.id = 'grid-' + category;
-    grid.append(safeText('p','এখনো কোনো প্রকাশিত সংবাদ নেই।','small'));
-    section.append(grid);
-    sections.append(section);
-  }
-}
-function renderNews(rows) {
-  buildSections();
-  for (const row of rows) {
-    const grid = document.getElementById('grid-' + row.category);
-    if (!grid) continue;
-    if (grid.children.length === 1 && grid.firstElementChild.tagName === 'P') grid.replaceChildren();
-    const article = document.createElement('article');
-    article.className = 'card';
-    if (row.image_url) {
-      const img = document.createElement('img');
-      img.src = row.image_url;
-      img.alt = row.title || 'সংবাদের ছবি';
-      img.loading = 'lazy';
-      article.append(img);
-    }
-    const body = document.createElement('div');
-    body.className = 'body';
-    body.append(safeText('span',row.category,'tag'));
-    body.append(safeText('h3',row.title));
-    body.append(safeText('p',row.content));
-    if (row.created_at) body.append(safeText('div',new Date(row.created_at).toLocaleString('bn-BD'),'meta'));
-    article.append(body);
-    grid.prepend(article);
-  }
-}
-async function loadNews() {
-  const { data, error } = await supabase.from('news')
-    .select('id,title,content,image_url,category,created_at')
-    .eq('published', true).order('created_at', {ascending:false});
-  if (error) {
-    statusEl.textContent = 'সংবাদ লোড করা যায়নি: ' + error.message;
-    buildSections();
-    return;
-  }
-  renderNews(data || []);
-}
-document.getElementById('loginBtn').addEventListener('click', async () => {
-  statusEl.textContent = 'লগইন হচ্ছে...';
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-  const { error } = await supabase.auth.signInWithPassword({email,password});
-  if (error) { statusEl.textContent = 'লগইন হয়নি: ' + error.message; return; }
-  await updateAuthView();
+
+function filterNews(){
+const q=document.getElementById('search').value.toLowerCase();
+document.querySelectorAll('#newsGrid .news').forEach(card=>{
+const matchCat=selected==='সব'||card.dataset.category===selected;
+const matchText=card.innerText.toLowerCase().includes(q);
+card.style.display=matchCat&&matchText?'':'none';
 });
-async function updateAuthView() {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (user) {
-    loginPanel.style.display = 'none';
-    adminPanel.style.display = 'block';
-    document.getElementById('signedIn').textContent = 'লগইন হয়েছে: ' + user.email;
-    statusEl.textContent = 'অ্যাডমিন প্যানেল প্রস্তুত।';
-  } else {
-    loginPanel.style.display = 'block';
-    adminPanel.style.display = 'none';
-    statusEl.textContent = '';
-  }
 }
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await supabase.auth.signOut();
-  await updateAuthView();
-});
-document.getElementById('publishBtn').addEventListener('click', async () => {
-  const btn = document.getElementById('publishBtn');
-  const title = document.getElementById('title').value.trim();
-  const content = document.getElementById('content').value.trim();
-  const category = document.getElementById('category').value;
-  const file = document.getElementById('imageFile').files[0];
-  const published = document.getElementById('published').checked;
-  if (!title || !content) { statusEl.textContent = 'শিরোনাম ও বিস্তারিত লিখুন।'; return; }
-  if (file && file.type !== 'image/jpeg') { statusEl.textContent = 'শুধু JPG/JPEG ছবি আপলোড করুন।'; return; }
-  btn.disabled = true;
-  statusEl.textContent = 'সংবাদ সংরক্ষণ হচ্ছে...';
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error('আগে অ্যাডমিন হিসেবে লগইন করুন।');
-    let image_url = null;
-    if (file) {
-      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-      const path = user.id + '/' + Date.now() + '-' + safeName;
-      const { error: uploadError } = await supabase.storage.from('news-images').upload(path,file,{contentType:'image/jpeg',upsert:false});
-      if (uploadError) throw uploadError;
-      const { data: publicData } = supabase.storage.from('news-images').getPublicUrl(path);
-      image_url = publicData.publicUrl;
-    }
-    const { error } = await supabase.from('news').insert({
-      title,content,category,image_url,published,author_id:user.id
-    });
-    if (error) throw error;
-    statusEl.textContent = 'সংবাদ সফলভাবে সংরক্ষিত হয়েছে।';
-    document.getElementById('title').value = '';
-    document.getElementById('content').value = '';
-    document.getElementById('imageFile').value = '';
-    await loadNews();
-  } catch (err) {
-    statusEl.textContent = 'সংবাদ প্রকাশ হয়নি: ' + (err.message || 'অজানা সমস্যা');
-  } finally {
-    btn.disabled = false;
-  }
-});
-buildSections();
-await loadNews();
-await updateAuthView();
-supabase.auth.onAuthStateChange(() => { updateAuthView(); });
+
+let paused=false;
+function toggleTicker(){
+paused=!paused;
+document.getElementById('ticker').classList.toggle('paused',paused);
+document.getElementById('pauseBtn').textContent=paused?'চালু করুন':'থামান';
+}
 </script>
 </body>
 </html>
