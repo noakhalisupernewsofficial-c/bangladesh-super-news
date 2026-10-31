@@ -9,23 +9,27 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f1f3f7;color:#222;font-family:Arial,sans-serif}
-header{background:#a90018;color:white;text-align:center;padding:24px 12px}
+header{background:#a90018;color:white;text-align:center;padding:22px 12px}
 header h2{margin:0 0 8px}
-header p{margin:0;font-size:14px}
-.container{max-width:850px;margin:25px auto;padding:12px}
-.card{background:white;padding:24px;border-radius:14px;box-shadow:0 4px 18px #0001;margin-bottom:20px}
+header p{margin:0}
+.container{max-width:950px;margin:22px auto;padding:12px}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 3px 14px #0001;margin-bottom:18px}
 h3{color:#a90018;margin-top:0}
 label{display:block;margin-top:14px;font-weight:bold}
-input{width:100%;padding:14px;margin-top:7px;border:1px solid #ddd;border-radius:8px;font-size:16px}
-button{background:#b0001b;color:white;border:0;border-radius:8px;padding:13px 20px;font-size:15px;cursor:pointer}
-button:disabled{opacity:.6}
-#loginBtn{width:100%;margin-top:20px}
+input,textarea,select{width:100%;padding:12px;margin-top:7px;border:1px solid #ddd;border-radius:7px;font-size:16px}
+textarea{min-height:150px;resize:vertical}
+button{background:#a90018;color:white;border:0;border-radius:7px;padding:11px 15px;font-size:14px;cursor:pointer;margin:5px 3px 5px 0}
+button:disabled{opacity:.5}
+.secondary{background:#555}
+.green{background:#16834a}
+.red{background:#b00020}
 .hidden{display:none!important}
-.message{font-size:14px;line-height:1.7;margin-top:12px;overflow-wrap:anywhere}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
-.tile{background:white;border-radius:12px;padding:22px;text-align:center;box-shadow:0 3px 12px #0001}
-.tile strong{display:block;color:#a90018;font-size:18px;margin-bottom:8px}
-.small{font-size:13px;color:#666;line-height:1.7}
+.message{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.small{font-size:13px;color:#666;line-height:1.6}
+.news-item{border:1px solid #ddd;border-radius:10px;padding:14px;margin:12px 0}
+.news-item h4{margin:0 0 8px}
+.news-item img{width:100%;max-width:220px;max-height:140px;object-fit:cover;border-radius:7px;margin-top:8px}
+.status{font-size:13px;font-weight:bold}
 footer{text-align:center;color:#777;font-size:13px;padding:20px}
 </style>
 </head>
@@ -40,211 +44,391 @@ footer{text-align:center;color:#777;font-size:13px;padding:20px}
 
 <section class="card" id="loginBox">
 <h3>🔐 অ্যাডমিন লগইন</h3>
-<p>অনুমোদিত অ্যাডমিন অ্যাকাউন্ট দিয়ে প্রবেশ করুন।</p>
-
 <form id="loginForm">
-<label for="email">ইমেইল</label>
+<label>ইমেইল</label>
 <input id="email" type="email" required autocomplete="username">
-
-<label for="password">পাসওয়ার্ড</label>
+<label>পাসওয়ার্ড</label>
 <input id="password" type="password" required autocomplete="current-password">
-
 <button id="loginBtn" type="submit">লগইন করুন</button>
 </form>
-<p class="message" id="message" role="status"></p>
+<p id="loginMessage" class="message"></p>
 </section>
 
 <section id="dashboard" class="hidden">
-
 <div class="card">
 <h3>স্বাগতম, অ্যাডমিন!</h3>
-<p>বাংলাদেশ সুপার নিউজ পরিচালনা ড্যাশবোর্ড।</p>
 <p id="adminEmail" class="small"></p>
 <button id="logoutBtn">লগআউট</button>
 </div>
 
-<div class="grid">
-<div class="tile">
-<strong>📰 সংবাদ প্রকাশ</strong>
-<span>নতুন সংবাদ যোগ</span>
-</div>
-<div class="tile">
-<strong>✏️ সংবাদ সম্পাদনা</strong>
-<span>সংবাদ পরিবর্তন</span>
-</div>
-<div class="tile">
-<strong>🚨 ব্রেকিং নিউজ</strong>
-<span>ব্রেকিং নিউজ পরিচালনা</span>
-</div>
-<div class="tile">
-<strong>📍 বিভাগ ও জেলা</strong>
-<span>এলাকাভিত্তিক সংবাদ</span>
-</div>
+<div class="card" id="editorCard">
+<h3 id="editorTitle">📰 নতুন সংবাদ প্রকাশ</h3>
+
+<form id="newsForm">
+<input type="hidden" id="newsId">
+
+<label>সংবাদের শিরোনাম</label>
+<input id="title" type="text" maxlength="250" required placeholder="সংবাদের শিরোনাম লিখুন">
+
+<label>সংবাদের বিভাগ</label>
+<select id="category" required>
+<option value="">বিভাগ নির্বাচন করুন</option>
+<option value="জাতীয়">জাতীয়</option>
+<option value="রাজনীতি">রাজনীতি</option>
+<option value="সারাদেশ">সারাদেশ</option>
+<option value="আন্তর্জাতিক">আন্তর্জাতিক</option>
+<option value="খেলাধুলা">খেলাধুলা</option>
+<option value="প্রযুক্তি">প্রযুক্তি</option>
+<option value="বিনোদন">বিনোদন</option>
+<option value="শিক্ষা">শিক্ষা</option>
+<option value="অর্থনীতি">অর্থনীতি</option>
+<option value="অন্যান্য">অন্যান্য</option>
+</select>
+
+<label>সংবাদের বিস্তারিত</label>
+<textarea id="content" required placeholder="সম্পূর্ণ সংবাদ লিখুন"></textarea>
+
+<label>সংবাদের ছবি (ঐচ্ছিক)</label>
+<input id="imageFile" type="file" accept="image/*">
+<p class="small" id="imageHelp">ছবি না দিলে আগের ছবিটি অপরিবর্তিত থাকবে।</p>
+
+<label>প্রকাশের অবস্থা</label>
+<select id="published">
+<option value="false">খসড়া হিসেবে সংরক্ষণ</option>
+<option value="true">ওয়েবসাইটে প্রকাশ</option>
+</select>
+
+<button id="saveBtn" type="submit">সংবাদ সংরক্ষণ করুন</button>
+<button type="button" class="secondary hidden" id="cancelEdit">সম্পাদনা বাতিল</button>
+<p id="formMessage" class="message"></p>
+</form>
 </div>
 
-<div class="card" style="margin-top:20px">
-<p class="small">অ্যাডমিন পরিচয় Supabase ডেটাবেসের মাধ্যমে যাচাই করা হয়েছে।</p>
+<div class="card">
+<h3>📋 প্রকাশিত ও সংরক্ষিত সংবাদ</h3>
+<button id="refreshBtn" class="secondary">তালিকা রিফ্রেশ করুন</button>
+<p id="listMessage" class="message"></p>
+<div id="newsList"></div>
 </div>
-
 </section>
 </main>
 
 <footer>© <span id="year"></span> বাংলাদেশ সুপার নিউজ</footer>
 
 <script>
-const SUPABASE_URL =
-"https://ousmshqqmudffvnxufhp.supabase.co";
+const SUPABASE_URL = "https://ousmshqqmudffvnxufhp.supabase.co";
+const SUPABASE_KEY = "sb_publishable_QPh6xZEXnjRB8M0B0F4fKw_HXlXLr4c";
 
-const SUPABASE_ANON_KEY =
-"sb_publishable_QPh6xZEXnjRB8M0B0F4fKw_HXlXLr4c";
-
-const loginBox = document.getElementById("loginBox");
-const dashboard = document.getElementById("dashboard");
-const message = document.getElementById("message");
-const loginBtn = document.getElementById("loginBtn");
-
-document.getElementById("year").textContent =
-new Date().getFullYear();
-
+const $ = id => document.getElementById(id);
 let client = null;
+let currentSession = null;
+let newsCache = [];
 let checking = false;
 
-function showLogin(msg = "") {
-dashboard.classList.add("hidden");
-loginBox.classList.remove("hidden");
-message.textContent = msg;
+$("year").textContent = new Date().getFullYear();
+
+function showLogin(msg=""){
+  $("dashboard").classList.add("hidden");
+  $("loginBox").classList.remove("hidden");
+  $("loginMessage").textContent = msg;
 }
 
-function showDashboard(session) {
-loginBox.classList.add("hidden");
-dashboard.classList.remove("hidden");
-document.getElementById("adminEmail").textContent =
-session.user.email || "";
+function showDashboard(session){
+  $("loginBox").classList.add("hidden");
+  $("dashboard").classList.remove("hidden");
+  $("adminEmail").textContent = session.user.email || "";
 }
 
-async function verifyAdmin(session) {
-if (!client || !session) {
-showLogin();
-return false;
+async function verifyAdmin(session){
+  if(!client || !session) return false;
+  if(checking) return false;
+  checking = true;
+
+  try{
+    const {data,error} = await client
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id",session.user.id)
+      .maybeSingle();
+
+    if(error || !data){
+      showLogin(error ? "অ্যাডমিন যাচাই করা যায়নি।" : "আপনি অনুমোদিত অ্যাডমিন নন।");
+      await client.auth.signOut();
+      return false;
+    }
+
+    currentSession = session;
+    showDashboard(session);
+    await loadNews();
+    return true;
+  }catch(error){
+    showLogin("যাচাই সমস্যা: " + error.message);
+    return false;
+  }finally{
+    checking = false;
+  }
 }
 
-if (checking) return false;
-checking = true;
+async function initialize(){
+  if(!window.supabase){
+    showLogin("Supabase লোড হয়নি। ইন্টারনেট পরীক্ষা করুন।");
+    return;
+  }
 
-try {
-const {data, error} = await client
-.from("admin_users")
-.select("user_id")
-.eq("user_id", session.user.id)
-.maybeSingle();
+  client = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-if (error) {
-showLogin("অ্যাডমিন যাচাই করা যায়নি। নিরাপত্তার কারণে প্রবেশ বন্ধ রাখা হয়েছে।");
-return false;
+  client.auth.onAuthStateChange((event,session)=>{
+    setTimeout(()=>{
+      if(session) verifyAdmin(session);
+      else{
+        currentSession = null;
+        showLogin();
+      }
+    },0);
+  });
+
+  const {data,error} = await client.auth.getSession();
+  if(error){
+    showLogin("সেশন পরীক্ষা করা যায়নি।");
+    return;
+  }
+  if(data.session) await verifyAdmin(data.session);
+  else showLogin();
 }
 
-if (!data) {
-showLogin("আপনার অ্যাকাউন্ট অ্যাডমিন হিসেবে অনুমোদিত নয়।");
-await client.auth.signOut();
-return false;
-}
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  $("loginBtn").disabled = true;
+  $("loginMessage").textContent = "যাচাই হচ্ছে...";
 
-showDashboard(session);
-return true;
-
-} catch (error) {
-showLogin("যাচাই করতে সমস্যা হয়েছে: " + error.message);
-return false;
-} finally {
-checking = false;
-}
-}
-
-async function initialize() {
-if (!window.supabase) {
-showLogin("Supabase লোড হয়নি। ইন্টারনেট পরীক্ষা করুন।");
-return;
-}
-
-client = window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
-);
-
-client.auth.onAuthStateChange((event, session) => {
-setTimeout(() => {
-if (session) {
-verifyAdmin(session);
-} else {
-showLogin();
-}
-}, 0);
+  try{
+    const {data,error} = await client.auth.signInWithPassword({
+      email:$("email").value.trim(),
+      password:$("password").value
+    });
+    if(error){
+      $("loginMessage").textContent = "লগইন হয়নি: " + error.message;
+    }else if(data.session){
+      await verifyAdmin(data.session);
+    }
+  }catch(error){
+    $("loginMessage").textContent = "সমস্যা: " + error.message;
+  }finally{
+    $("loginBtn").disabled = false;
+  }
 });
 
-const {data, error} = await client.auth.getSession();
-
-if (error) {
-showLogin("সেশন পরীক্ষা করতে সমস্যা হয়েছে।");
-return;
-}
-
-if (data.session) {
-await verifyAdmin(data.session);
-} else {
-showLogin();
-}
-}
-
-document.getElementById("loginForm")
-.addEventListener("submit", async function(e) {
-e.preventDefault();
-
-if (!client) return;
-
-loginBtn.disabled = true;
-loginBtn.textContent = "যাচাই হচ্ছে...";
-message.textContent = "";
-
-try {
-const {data, error} = await client.auth.signInWithPassword({
-email: document.getElementById("email").value.trim(),
-password: document.getElementById("password").value
+$("logoutBtn").addEventListener("click",async()=>{
+  const {error} = await client.auth.signOut();
+  if(error) alert("লগআউট সমস্যা: " + error.message);
+  else{
+    $("password").value = "";
+    showLogin("সফলভাবে লগআউট হয়েছে।");
+  }
 });
 
-if (error) {
-showLogin("লগইন হয়নি: " + error.message);
-return;
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[char]);
 }
 
-if (data.session) {
-await verifyAdmin(data.session);
+async function loadNews(){
+  $("listMessage").textContent = "সংবাদ তালিকা লোড হচ্ছে...";
+  const {data,error} = await client
+    .from("news")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+  if(error){
+    $("listMessage").textContent = "সংবাদ লোড হয়নি: " + error.message;
+    return;
+  }
+
+  newsCache = data || [];
+  $("listMessage").textContent = newsCache.length
+    ? "মোট সংবাদ: " + newsCache.length
+    : "এখনো কোনো সংবাদ নেই।";
+
+  renderNews();
 }
 
-} catch (error) {
-showLogin("সমস্যা হয়েছে: " + error.message);
-} finally {
-loginBtn.disabled = false;
-loginBtn.textContent = "লগইন করুন";
+function renderNews(){
+  const list = $("newsList");
+  list.innerHTML = "";
+
+  newsCache.forEach(item=>{
+    const status = item.published
+      ? '<span class="status" style="color:green">প্রকাশিত</span>'
+      : '<span class="status" style="color:#b36b00">খসড়া</span>';
+
+    const image = item.image_url
+      ? '<img src="' + escapeHTML(item.image_url) + '" alt="সংবাদের ছবি">'
+      : "";
+
+    const article = document.createElement("div");
+    article.className = "news-item";
+    article.innerHTML = `
+      <h4>${escapeHTML(item.title)}</h4>
+      <p class="small">বিভাগ: ${escapeHTML(item.category || "অন্যান্য")} | ${status}</p>
+      ${image}
+      <p>${escapeHTML((item.content || "").slice(0,180))}${(item.content || "").length > 180 ? "..." : ""}</p>
+      <button data-action="edit" data-id="${item.id}">✏️ সম্পাদনা</button>
+      <button class="green" data-action="toggle" data-id="${item.id}">
+        ${item.published ? "অপ্রকাশ করুন" : "প্রকাশ করুন"}
+      </button>
+      <button class="red" data-action="delete" data-id="${item.id}">🗑️ ডিলিট</button>
+    `;
+    list.appendChild(article);
+  });
 }
+
+function resetForm(){
+  $("newsForm").reset();
+  $("newsId").value = "";
+  $("editorTitle").textContent = "📰 নতুন সংবাদ প্রকাশ";
+  $("saveBtn").textContent = "সংবাদ সংরক্ষণ করুন";
+  $("cancelEdit").classList.add("hidden");
+  $("formMessage").textContent = "";
+  $("imageHelp").textContent = "ছবি না দিলে আগের ছবিটি অপরিবর্তিত থাকবে।";
+}
+
+$("cancelEdit").addEventListener("click",resetForm);
+
+$("newsForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+
+  if(!currentSession){
+    $("formMessage").textContent = "আপনার সেশন নেই। আবার লগইন করুন।";
+    return;
+  }
+
+  const id = $("newsId").value;
+  const existing = newsCache.find(n=>String(n.id) === String(id));
+  const file = $("imageFile").files[0];
+
+  $("saveBtn").disabled = true;
+  $("formMessage").textContent = "সংবাদ সংরক্ষণ হচ্ছে...";
+
+  try{
+    let imageUrl = existing?.image_url || null;
+
+    if(file){
+      if(!file.type.startsWith("image/")){
+        throw new Error("শুধু ছবির ফাইল নির্বাচন করুন।");
+      }
+      if(file.size > 5 * 1024 * 1024){
+        throw new Error("ছবির আকার ৫ MB-এর বেশি হতে পারবে না।");
+      }
+
+      const extension = file.name.split(".").pop().replace(/[^a-zA-Z0-9]/g,"") || "jpg";
+      const filePath = currentSession.user.id + "/" + crypto.randomUUID() + "." + extension;
+
+      const {error:uploadError} = await client.storage
+        .from("news-images")
+        .upload(filePath,file,{contentType:file.type,upsert:false});
+
+      if(uploadError) throw uploadError;
+
+      const {data:urlData} = client.storage
+        .from("news-images")
+        .getPublicUrl(filePath);
+
+      imageUrl = urlData.publicUrl;
+    }
+
+    const record = {
+      title:$("title").value.trim(),
+      content:$("content").value.trim(),
+      category:$("category").value,
+      image_url:imageUrl,
+      published:$("published").value === "true"
+    };
+
+    let result;
+    if(id){
+      result = await client.from("news").update(record).eq("id",id);
+    }else{
+      record.author_id = currentSession.user.id;
+      result = await client.from("news").insert(record);
+    }
+
+    if(result.error) throw result.error;
+
+    $("formMessage").textContent = id
+      ? "সংবাদ সফলভাবে আপডেট হয়েছে।"
+      : "সংবাদ সফলভাবে সংরক্ষণ হয়েছে।";
+
+    resetForm();
+    await loadNews();
+
+  }catch(error){
+    $("formMessage").textContent = "সংরক্ষণ করা যায়নি: " + error.message;
+  }finally{
+    $("saveBtn").disabled = false;
+  }
 });
 
-document.getElementById("logoutBtn")
-.addEventListener("click", async function() {
-this.disabled = true;
+$("newsList").addEventListener("click",async e=>{
+  const button = e.target.closest("button[data-action]");
+  if(!button) return;
 
-try {
-const {error} = await client.auth.signOut();
+  const id = button.dataset.id;
+  const action = button.dataset.action;
+  const item = newsCache.find(n=>String(n.id) === String(id));
+  if(!item) return;
 
-if (error) {
-alert("লগআউট সমস্যা: " + error.message);
-} else {
-document.getElementById("password").value = "";
-showLogin("সফলভাবে লগআউট হয়েছে।");
-}
-} finally {
-this.disabled = false;
-}
+  if(action === "edit"){
+    $("newsId").value = item.id;
+    $("title").value = item.title || "";
+    $("content").value = item.content || "";
+    $("category").value = item.category || "";
+    $("published").value = String(!!item.published);
+    $("editorTitle").textContent = "✏️ সংবাদ সম্পাদনা";
+    $("saveBtn").textContent = "পরিবর্তন সংরক্ষণ করুন";
+    $("cancelEdit").classList.remove("hidden");
+    $("imageHelp").textContent = "নতুন ছবি না দিলে আগের ছবিই থাকবে।";
+    $("formMessage").textContent = "সংবাদ সম্পাদনা করুন।";
+    $("editorCard").scrollIntoView({behavior:"smooth"});
+    return;
+  }
+
+  if(action === "delete"){
+    if(!confirm("আপনি কি নিশ্চিতভাবে এই সংবাদটি ডিলিট করতে চান?")) return;
+
+    button.disabled = true;
+    const {error} = await client.from("news").delete().eq("id",id);
+    if(error){
+      alert("ডিলিট করা যায়নি: " + error.message);
+      button.disabled = false;
+    }else{
+      alert("সংবাদ ডিলিট হয়েছে।");
+      resetForm();
+      await loadNews();
+    }
+    return;
+  }
+
+  if(action === "toggle"){
+    const newStatus = !item.published;
+    if(!confirm(newStatus ? "এই সংবাদটি প্রকাশ করবেন?" : "এই সংবাদটি অপ্রকাশ করবেন?")) return;
+
+    button.disabled = true;
+    const {error} = await client
+      .from("news")
+      .update({published:newStatus})
+      .eq("id",id);
+
+    if(error){
+      alert("পরিবর্তন করা যায়নি: " + error.message);
+      button.disabled = false;
+    }else{
+      await loadNews();
+    }
+  }
 });
+
+$("refreshBtn").addEventListener("click",loadNews);
 
 initialize();
 </script>
