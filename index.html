@@ -1,237 +1,150 @@
-
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07552d">
+<title>বাংলাদেশ সুপার নিউজ | সত্যের পথে, মানুষ ও দেশের সাথে</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#07552d;--red:#d71932;--ink:#18221d;--muted:#69756e;--line:#e3e9e5;--bg:#f3f6f4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans Bengali",Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+.wrap{width:min(1480px,96%);margin:auto}
+.topline{background:#fff;border-bottom:1px solid var(--line);font-size:12px;color:#59655e}
+.topline .wrap{display:flex;justify-content:space-between;padding:7px 0;gap:12px}
+.masthead{background:#fff;padding:12px 0}
+.mast{display:grid;grid-template-columns:1fr 1.4fr 1fr;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.brandmark{width:62px;height:62px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:25px;font-weight:800;border:4px solid #e4f1e9;flex-shrink:0}
+.brand h1{font-size:clamp(22px,3vw,38px);color:var(--green);margin:0;line-height:1.2;font-weight:800}
+.brand h1 span{color:var(--red)}
+.tagline{font-size:13px;color:#303b34;margin-top:4px}
+.banner{height:94px;border-radius:10px;background:linear-gradient(100deg,#e8f2e9,#fff 48%,#07552d);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--green);font-size:20px;font-weight:800;overflow:hidden}
+.banner strong{color:var(--red)}
+.social{text-align:right;color:var(--muted);font-size:13px}
+nav{background:var(--green);color:#fff;box-shadow:0 3px 8px #001d0c22}
+nav .wrap{display:flex;overflow:auto;white-space:nowrap}
+nav a{padding:12px 15px;font-size:14px;font-weight:600}
+nav a:hover,nav a.active{background:#0b7540}
+.breakbar{background:#fff;border-bottom:1px solid var(--line)}
+.breakrow{display:flex;align-items:center;gap:12px;min-height:47px}
+.breaklabel{background:var(--red);color:#fff;padding:7px 13px;font-weight:800;border-radius:5px;white-space:nowrap}
+.tickerbox{flex:1;overflow:hidden;white-space:nowrap}
+.ticker{display:inline-flex;gap:44px;animation:move 32s linear infinite}
+.ticker.paused{animation-play-state:paused}
+.ticker span:before{content:"●";color:var(--red);margin-right:12px}
+@keyframes move{to{transform:translateX(-50%)}}
+.tinybtn{border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 10px;cursor:pointer}
+main{padding:16px 0 40px}
+.lead-layout{display:grid;grid-template-columns:1.2fr .92fr .95fr;gap:14px}
+.lead{position:relative;min-height:350px;border-radius:9px;overflow:hidden;background:#dfe6e0;cursor:pointer}
+.lead img{width:100%;height:100%;min-height:350px;object-fit:cover;display:block}
+.lead:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#000d)}
+.leadtext{position:absolute;bottom:0;left:0;right:0;padding:18px;color:white;z-index:1}
+.tag{display:inline-block;background:var(--red);color:#fff;border-radius:4px;padding:3px 9px;font-size:12px;font-weight:700}
+.leadtext h2{font-size:clamp(20px,2.1vw,29px);line-height:1.4;margin:9px 0}
+.subleads{display:grid;gap:12px}
+.sublead{display:grid;grid-template-columns:42% 1fr;min-height:108px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;cursor:pointer}
+.sublead img{width:100%;height:100%;min-height:108px;object-fit:cover}
+.sublead div{padding:10px}
+.sublead h3{font-size:15px;line-height:1.45;margin:7px 0}
+.sidepanel{background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.tabs{display:flex;background:#f5e9ec}
+.tabs b{padding:10px;font-size:13px;flex:1;text-align:center}
+.tabs b:first-child{background:var(--red);color:#fff}
+.popular{padding:8px 14px}
+.popular article{display:grid;grid-template-columns:24px 72px 1fr;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.popular article:last-child{border:0}
+.rank{color:var(--red);font-weight:800}
+.popular img{width:72px;height:48px;object-fit:cover;border-radius:5px}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:22px 0 12px;border-bottom:2px solid var(--green)}
+.sectionhead h2{margin:0;background:var(--green);color:#fff;padding:8px 15px;border-radius:6px 6px 0 0;font-size:20px}
+.muted{font-size:12px;color:var(--muted)}
+.regional{display:grid;grid-template-columns:2fr .85fr;gap:14px}
+.regionbox,.districtbox{background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.boxhead{background:var(--green);color:#fff;padding:10px 14px;font-weight:800;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.divisiongrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px}
+.division{border:1px solid #dce7df;border-radius:8px;overflow:hidden;background:#fff;cursor:pointer;text-align:center;padding:0 0 9px;color:var(--ink)}
+.division:hover,.division.selected{outline:2px solid var(--green);background:#eff8f1}
+.division strong{display:block;padding-top:5px}
+.division small{color:var(--muted);font-size:11px}
+.districtbox .boxhead{background:#0c4eb5}
+.districtbox select{width:calc(100% - 22px);margin:12px 11px;padding:10px;border:1px solid var(--line);border-radius:6px}
+.districtbox button{margin:0 11px 12px;width:calc(100% - 22px);border:0;background:#0c4eb5;color:#fff;padding:9px;border-radius:6px;cursor:pointer}
+.districtlist{display:flex;flex-wrap:wrap;gap:7px;padding:0 11px 12px}
+.districtlist button{width:auto;margin:0;padding:5px 9px;background:#edf3ff;color:#16488f;font-size:12px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0}
+.toolbar input,.toolbar select{background:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:7px;min-width:180px;flex:1}
+.newsgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.newscard{background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden;cursor:pointer;transition:.15s}
+.newscard:hover{transform:translateY(-2px);box-shadow:0 5px 16px #0001}
+.newscard img{width:100%;height:155px;object-fit:cover;background:#e8ece9}
+.newscard .body{padding:11px}
+.newscard h3{font-size:16px;line-height:1.5;margin:5px 0 8px}
+.newscard p{font-size:13px;color:#5d6962;margin:0 0 8px}
+.noimg{height:155px;display:grid;place-items:center;background:#eaf1ec;color:#789080}
+.empty{background:#fff;border:1px solid var(--line);border-radius:8px;padding:25px;text-align:center;color:var(--muted);grid-column:1/-1}
+footer{background:#10271b;color:#e1ebe4;padding:25px 0;text-align:center;font-size:13px}
+.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.open{display:flex}
+.modalinner{background:#fff;border-radius:12px;width:min(800px,100%);max-height:92vh;overflow:auto;padding:20px}
+.modalinner img{width:100%;max-height:380px;object-fit:cover;border-radius:8px}
+.modalinner h2{line-height:1.5}
+.close{float:right;border:0;background:#eee;border-radius:50%;width:34px;height:34px;font-size:20px;cursor:pointer}
+@media(max-width:1050px){.lead-layout{grid-template-columns:1fr 1fr}.sidepanel{grid-column:1/-1}.popular{display:grid;grid-template-columns:1fr 1fr}.regional{grid-template-columns:1fr}.newsgrid{grid-template-columns:repeat(3,1fr)}.mast{grid-template-columns:1fr 1fr}.social{display:none}}
+@media(max-width:650px){.mast{grid-template-columns:1fr}.banner{display:none}.brandmark{width:48px;height:48px}.lead-layout{grid-template-columns:1fr}.lead{min-height:260px}.lead img{min-height:260px}.sidepanel{grid-column:auto}.popular{display:block}.divisiongrid{grid-template-columns:repeat(2,1fr)}.newsgrid{grid-template-columns:repeat(2,1fr)}.newscard img,.noimg{height:120px}.newscard h3{font-size:14px}.breakrow{gap:6px}.breaklabel{font-size:12px;padding:6px}.sublead{min-height:90px}.sublead img{min-height:90px}}
+</style>
+</head>
+<body>
+<div class="topline"><div class="wrap"><span>সর্বশেষ খবর, নির্ভরযোগ্য সংবাদ</span><span id="today"></span></div></div>
+<header class="masthead"><div class="wrap mast"><div class="brand"><div class="brandmark">বস</div><div><h1>বাংলাদেশ <span>সুপার নিউজ</span></h1><div class="tagline">সত্যের পথে, মানুষ ও দেশের সাথে</div></div></div><div class="banner">স্মার্ট বাংলাদেশ <strong>&nbsp; গড়ার প্রত্যয়</strong></div><div class="social">আমাদের সম্পর্কে　|　যোগাযোগ<br>সত্যের পথে, মানুষের পাশে</div></div></header>
+<nav><div class="wrap"><a class="active" href="#" data-cat="সব">⌂ প্রচ্ছদ</a><a href="#" data-cat="জাতীয়">জাতীয়</a><a href="#" data-cat="রাজনীতি">রাজনীতি</a><a href="#" data-cat="অর্থনীতি">অর্থনীতি</a><a href="#" data-cat="আন্তর্জাতিক">আন্তর্জাতিক</a><a href="#" data-cat="খেলাধুলা">খেলাধুলা</a><a href="#" data-cat="বিনোদন">বিনোদন</a><a href="#" data-cat="প্রযুক্তি">প্রযুক্তি</a><a href="#" data-cat="শিক্ষা">শিক্ষা</a><a href="admin.html">অ্যাডমিন</a></div></nav>
+<div class="breakbar"><div class="wrap breakrow"><span class="breaklabel">⚡ ব্রেকিং নিউজ</span><div class="tickerbox"><div id="ticker" class="ticker"><span>ব্রেকিং নিউজ লোড হচ্ছে...</span></div></div><button class="tinybtn" id="tickerPause">থামান</button></div></div>
+<main class="wrap">
+<section class="lead-layout" id="leadLayout"><div class="lead"><div class="leadtext"><h2>সংবাদ লোড হচ্ছে...</h2></div></div><div class="subleads"></div><aside class="sidepanel"><div class="tabs"><b>★ জনপ্রিয় সংবাদ</b><b>⚡ সর্বশেষ সংবাদ</b><b>▥ পড়ুন বেশি</b></div><div class="popular" id="popular"><p class="muted">সংবাদ লোড হচ্ছে...</p></div></aside></section>
+<section><div class="sectionhead"><h2>📍 বিভাগীয় সংবাদ</h2><span class="muted">বাংলাদেশের ৮ বিভাগ ও ৬৪ জেলা</span></div><div class="regional"><div class="regionbox"><div class="boxhead"><span>বিভাগ নির্বাচন করুন</span><span class="muted" style="color:#e2eee5">বিভাগে ক্লিক করুন</span></div><div class="divisiongrid" id="divisionGrid"></div></div><div class="districtbox"><div class="boxhead">📍 জেলা নির্বাচন করুন</div><select id="districtSelect" disabled><option value="">প্রথমে বিভাগ নির্বাচন করুন</option></select><button id="showDistrict">জেলার সংবাদ দেখুন</button><div class="districtlist" id="districtQuick"></div></div></div></section>
+<div class="toolbar"><input id="search" type="search" placeholder="শিরোনাম বা সংবাদ খুঁজুন..."><select id="categoryFilter"><option value="সব">সব বিভাগ</option><option>জাতীয়</option><option>রাজনীতি</option><option>সারাদেশ</option><option>আন্তর্জাতিক</option><option>খেলাধুলা</option><option>প্রযুক্তি</option><option>বিনোদন</option><option>শিক্ষা</option><option>অর্থনীতি</option><option>অন্যান্য</option></select><button class="tinybtn" id="clearFilter">সব সংবাদ</button></div>
+<section><div class="sectionhead"><h2 id="newsHeading">সর্বশেষ সংবাদ</h2><span class="muted" id="newsCount"></span></div><div class="newsgrid" id="newsGrid"><div class="empty">সংবাদ লোড হচ্ছে...</div></div></section>
+</main>
+<footer><div class="wrap">© <span id="year"></span> বাংলাদেশ সুপার নিউজ<br>সত্যের পথে, মানুষ ও দেশের সাথে</div></footer>
+<div class="modal" id="modal"><div class="modalinner"><button class="close" id="closeModal">×</button><div id="article"></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-document.getElementById('today').textContent =
-  new Date().toLocaleDateString('bn-BD');
-
-document.getElementById('year').textContent =
-  new Date().getFullYear();
-
-let selected = 'সব';
-
-function chooseCategory(cat, btn) {
-  selected = cat;
-  document.querySelectorAll('.categories button').forEach(b => {
-    b.classList.remove('active');
-  });
-  btn.classList.add('active');
-  filterNews();
-}
-
-function filterNews() {
-  const q = document.getElementById('search').value.toLowerCase();
-
-  document.querySelectorAll('#newsGrid .news').forEach(card => {
-    const matchCat = selected === 'সব' ||
-      card.dataset.category === selected;
-    const matchText = card.innerText.toLowerCase().includes(q);
-    card.style.display = matchCat && matchText ? '' : 'none';
-  });
-}
-
-let paused = false;
-
-function toggleTicker() {
-  paused = !paused;
-  document.getElementById('ticker').classList.toggle('paused', paused);
-  document.getElementById('pauseBtn').textContent =
-    paused ? 'চালু করুন' : 'থামান';
-}
-
-/* বাংলাদেশের ৮ বিভাগ ও ৬৪ জেলা */
-const bangladeshAreas = {
-  "ঢাকা":["ঢাকা","গাজীপুর","নারায়ণগঞ্জ","নরসিংদী","টাঙ্গাইল","কিশোরগঞ্জ","মানিকগঞ্জ","মুন্সিগঞ্জ","মাদারীপুর","শরীয়তপুর","গোপালগঞ্জ","ফরিদপুর","রাজবাড়ী"],
-  "চট্টগ্রাম":["চট্টগ্রাম","কুমিল্লা","ফেনী","নোয়াখালী","লক্ষ্মীপুর","চাঁদপুর","ব্রাহ্মণবাড়িয়া","রাঙামাটি","বান্দরবান","খাগড়াছড়ি","কক্সবাজার"],
-  "রাজশাহী":["রাজশাহী","বগুড়া","জয়পুরহাট","নওগাঁ","নাটোর","চাঁপাইনবাবগঞ্জ","পাবনা","সিরাজগঞ্জ"],
-  "খুলনা":["খুলনা","বাগেরহাট","সাতক্ষীরা","যশোর","নড়াইল","মাগুরা","ঝিনাইদহ","কুষ্টিয়া","চুয়াডাঙ্গা","মেহেরপুর"],
-  "বরিশাল":["বরিশাল","ভোলা","পটুয়াখালী","পিরোজপুর","বরগুনা","ঝালকাঠি"],
-  "সিলেট":["সিলেট","মৌলভীবাজার","হবিগঞ্জ","সুনামগঞ্জ"],
-  "রংপুর":["রংপুর","দিনাজপুর","গাইবান্ধা","কুড়িগ্রাম","লালমনিরহাট","নীলফামারী","পঞ্চগড়","ঠাকুরগাঁও"],
-  "ময়মনসিংহ":["ময়মনসিংহ","জামালপুর","নেত্রকোণা","শেরপুর"]
-};
-
-const areaDivision = document.getElementById('areaDivision');
-const areaDistrict = document.getElementById('areaDistrict');
-const areaMessage = document.getElementById('areaMessage');
-const divisionButtons = document.getElementById('divisionButtons');
-
-Object.keys(bangladeshAreas).forEach(division => {
-  const option = document.createElement('option');
-  option.value = division;
-  option.textContent = division + ' বিভাগ';
-  areaDivision.appendChild(option);
-
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.textContent = division;
-  button.addEventListener('click', () => {
-    areaDivision.value = division;
-    updateDistricts();
-  });
-  divisionButtons.appendChild(button);
-});
-
-function updateDistricts() {
-  const division = areaDivision.value;
-  areaDistrict.innerHTML = '<option value="">জেলা নির্বাচন করুন</option>';
-
-  if (!division) {
-    areaDistrict.disabled = true;
-    areaMessage.textContent = 'প্রথমে বিভাগ নির্বাচন করুন।';
-    return;
-  }
-
-  bangladeshAreas[division].forEach(district => {
-    const option = document.createElement('option');
-    option.value = district;
-    option.textContent = district + ' জেলা';
-    areaDistrict.appendChild(option);
-  });
-
-  areaDistrict.disabled = false;
-  areaMessage.textContent =
-    division + ' বিভাগ নির্বাচন করা হয়েছে। এবার জেলা নির্বাচন করুন।';
-
-  document.querySelectorAll('#divisionButtons button').forEach(button => {
-    button.classList.toggle('active', button.textContent === division);
-  });
-}
-
-areaDivision.addEventListener('change', updateDistricts);
-
-areaDistrict.addEventListener('change', () => {
-  if (areaDistrict.value) {
-    areaMessage.textContent =
-      'আপনি নির্বাচন করেছেন: ' + areaDivision.value +
-      ' বিভাগ, ' + areaDistrict.value + ' জেলা।';
-  }
-});
-
-/* Supabase থেকে প্রকাশিত সংবাদ দেখানো */
-const SUPABASE_URL = 'https://ousmshqqmudffvnxufhp.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_QPh6xZEXnjRB8M0B0F4fKw_HXlXLr4c';
-
-function loadSupabaseLibrary() {
-  return new Promise((resolve, reject) => {
-    if (window.supabase) {
-      resolve();
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src =
-      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-    script.onload = resolve;
-    script.onerror = () => reject(new Error('Supabase লাইব্রেরি লোড হয়নি'));
-    document.head.appendChild(script);
-  });
-}
-
-function addText(parent, tag, value, className) {
-  const element = document.createElement(tag);
-  element.textContent = value || '';
-  if (className) element.className = className;
-  parent.appendChild(element);
-  return element;
-}
-
-async function loadNews() {
-  const grid = document.getElementById('newsGrid');
-  grid.innerHTML = '<p>সংবাদ লোড হচ্ছে...</p>';
-
-  try {
-    await loadSupabaseLibrary();
-
-    const client = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-
-    const { data, error } = await client
-      .from('news')
-      .select('id,title,content,image_url,category,created_at')
-      .eq('published', true)
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-
-    grid.innerHTML = '';
-
-    if (!data || data.length === 0) {
-      grid.textContent = 'এখনো কোনো প্রকাশিত সংবাদ পাওয়া যায়নি।';
-      return;
-    }
-
-    data.forEach(news => {
-      const card = document.createElement('article');
-      card.className = 'news';
-      card.dataset.category = news.category || '';
-
-      if (news.image_url) {
-        const photo = document.createElement('div');
-        photo.className = 'photo';
-
-        const img = document.createElement('img');
-        img.src = news.image_url;
-        img.alt = news.title || 'সংবাদের ছবি';
-        img.loading = 'lazy';
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-
-        photo.appendChild(img);
-        card.appendChild(photo);
-      } else {
-        addText(card, 'div', 'সংবাদের ছবি', 'photo');
-      }
-
-      const body = document.createElement('div');
-      body.className = 'body';
-
-      addText(body, 'small', news.category || 'অন্যান্য');
-      addText(body, 'h3', news.title || 'শিরোনাম নেই');
-
-      const content = news.content || '';
-      const preview = content.length > 160
-        ? content.slice(0, 160) + '...'
-        : content;
-
-      addText(body, 'p', preview);
-
-      if (news.created_at) {
-        const date = new Date(news.created_at);
-        addText(body, 'small',
-          date.toLocaleDateString('bn-BD'));
-      }
-
-      const details = document.createElement('details');
-      details.style.padding = '0 16px 16px';
-
-      const summary = document.createElement('summary');
-      summary.textContent = 'সম্পূর্ণ সংবাদ পড়ুন';
-      summary.style.cursor = 'pointer';
-      summary.style.color = '#b90024';
-      details.appendChild(summary);
-
-      const fullText = document.createElement('p');
-      fullText.textContent = content;
-      fullText.style.whiteSpace = 'pre-wrap';
-      fullText.style.lineHeight = '1.9';
-      details.appendChild(fullText);
-
-      card.appendChild(body);
-      card.appendChild(details);
-      grid.appendChild(card);
-    });
-
-    filterNews();
-
-  } catch (error) {
-    console.error('News loading error:', error);
-    grid.textContent =
-      'দুঃখিত! সংবাদ লোড করা যায়নি। ইন্টারনেট সংযোগ বা ডেটাবেজের অনুমতি পরীক্ষা করতে হবে।';
-  }
-}
-
-loadNews();
-    </script>
-    
+const SUPABASE_URL="https://ousmshqqmudffvnxufhp.supabase.co";
+const SUPABASE_KEY="sb_publishable_QPh6xZEXnjRB8M0B0F4fKw_HXlXLr4c";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const districts={"ঢাকা":["ঢাকা","গাজীপুর","নারায়ণগঞ্জ","নরসিংদী","টাঙ্গাইল","কিশোরগঞ্জ","মানিকগঞ্জ","মুন্সিগঞ্জ","মাদারীপুর","শরীয়তপুর","গোপালগঞ্জ","ফরিদপুর","রাজবাড়ী"],"চট্টগ্রাম":["চট্টগ্রাম","কুমিল্লা","ফেনী","নোয়াখালী","লক্ষ্মীপুর","চাঁদপুর","ব্রাহ্মণবাড়িয়া","রাঙামাটি","বান্দরবান","খাগড়াছড়ি","কক্সবাজার"],"রাজশাহী":["রাজশাহী","বগুড়া","জয়পুরহাট","নওগাঁ","নাটোর","চাঁপাইনবাবগঞ্জ","পাবনা","সিরাজগঞ্জ"],"খুলনা":["খুলনা","বাগেরহাট","সাতক্ষীরা","যশোর","নড়াইল","মাগুরা","ঝিনাইদহ","কুষ্টিয়া","চুয়াডাঙ্গা","মেহেরপুর"],"বরিশাল":["বরিশাল","ভোলা","পটুয়াখালী","পিরোজপুর","বরগুনা","ঝালকাঠি"],"সিলেট":["সিলেট","মৌলভীবাজার","হবিগঞ্জ","সুনামগঞ্জ"],"রংপুর":["রংপুর","দিনাজপুর","গাইবান্ধা","কুড়িগ্রাম","লালমনিরহাট","নীলফামারী","পঞ্চগড়","ঠাকুরগাঁও"],"ময়মনসিংহ":["ময়মনসিংহ","জামালপুর","নেত্রকোণা","শেরপুর"]};
+const divisionCounts={"ঢাকা":13,"চট্টগ্রাম":11,"রাজশাহী":8,"খুলনা":10,"বরিশাল":6,"সিলেট":4,"রংপুর":8,"ময়মনসিংহ":4};
+let rows=[],activeCategory="সব",activeDivision="",activeDistrict="",tickerPaused=false;
+const $=id=>document.getElementById(id);
+$("today").textContent=new Date().toLocaleDateString("bn-BD",{dateStyle:"full"});
+$("year").textContent=new Date().getFullYear();
+function el(tag,text,cls){const n=document.createElement(tag);n.textContent=text||"";if(cls)n.className=cls;return n}
+function date(v){try{return new Date(v).toLocaleDateString("bn-BD")}catch(e){return""}}
+function renderDivisions(){const g=$("divisionGrid");Object.keys(districts).forEach(d=>{const b=document.createElement("button");b.className="division";b.type="button";b.innerHTML=`<div class="noimg" style="height:75px">🇧🇩</div><strong>${d}</strong><small>(${divisionCounts[d]} জেলা)</small>`;b.onclick=()=>chooseDivision(d);g.appendChild(b)})}
+function chooseDivision(d){activeDivision=d;activeDistrict="";document.querySelectorAll(".division").forEach(b=>b.classList.toggle("selected",b.querySelector("strong").textContent===d));$("districtSelect").disabled=false;$("districtSelect").innerHTML='<option value="">সব জেলা — '+d+' বিভাগ</option>';districts[d].forEach(x=>{const o=document.createElement("option");o.value=x;o.textContent=x+" জেলা";$("districtSelect").appendChild(o)});$("districtQuick").innerHTML="";districts[d].forEach(x=>{const b=el("button",x);b.type="button";b.onclick=()=>{activeDistrict=x;$("districtSelect").value=x;renderNews()};$("districtQuick").appendChild(b)});$("newsHeading").textContent=d+" বিভাগের সংবাদ";renderNews()}
+$("districtSelect").onchange=()=>{activeDistrict=$("districtSelect").value;renderNews()};
+$("showDistrict").onclick=()=>{if(!$("districtSelect").value){activeDistrict=""}else activeDistrict=$("districtSelect").value;renderNews()};
+$("clearFilter").onclick=()=>{activeCategory="সব";activeDivision="";activeDistrict="";$("search").value="";$("categoryFilter").value="সব";$("districtSelect").disabled=true;$("districtSelect").innerHTML='<option>প্রথমে বিভাগ নির্বাচন করুন</option>';$("districtQuick").innerHTML="";document.querySelectorAll(".division").forEach(b=>b.classList.remove("selected"));$("newsHeading").textContent="সর্বশেষ সংবাদ";renderNews()};
+$("search").oninput=renderNews;
+$("categoryFilter").onchange=e=>{activeCategory=e.target.value;renderNews()};
+document.querySelectorAll("nav a[data-cat]").forEach(a=>a.onclick=e=>{e.preventDefault();activeCategory=a.dataset.cat;$("categoryFilter").value=activeCategory;document.querySelectorAll("nav a").forEach(x=>x.classList.remove("active"));a.classList.add("active");renderNews()});
+function filtered(){const q=$("search").value.trim().toLocaleLowerCase("bn");return rows.filter(n=>n.published&&(activeCategory==="সব"||n.category===activeCategory)&&(!activeDivision||n.division===activeDivision)&&(!activeDistrict||n.district===activeDistrict)&&(!q||(n.title||"").toLocaleLowerCase("bn").includes(q)||(n.content||"").toLocaleLowerCase("bn").includes(q)))}
+function openArticle(n){$("article").innerHTML="";if(n.image_url){const im=document.createElement("img");im.src=n.image_url;im.alt=n.title;im.style.cssText="width:100%;max-height:380px;object-fit:cover;border-radius:8px";$("article").appendChild(im)}$("article").appendChild(el("small",(n.category||"অন্যান্য")+" • "+date(n.created_at),"tag"));$("article").appendChild(el("h2",n.title));$("article").appendChild(el("p",(n.division||"")+(n.district?" • "+n.district:"")+" • "+date(n.created_at),"muted"));const p=el("p",n.content||"");p.style.cssText="white-space:pre-wrap;line-height:2";$("article").appendChild(p);$("modal").classList.add("open")}
+function card(n){const c=document.createElement("article");c.className="newscard";if(n.image_url){const im=document.createElement("img");im.src=n.image_url;im.alt=n.title;im.loading="lazy";c.appendChild(im)}else c.appendChild(el("div","বাংলাদেশ সুপার নিউজ","noimg"));const b=document.createElement("div");b.className="body";b.appendChild(el("small",n.category||"অন্যান্য","tag"));b.appendChild(el("h3",n.title));b.appendChild(el("p",(n.content||"").slice(0,115)+(n.content&&n.content.length>115?"…":"")));b.appendChild(el("div",(n.division||"")+(n.district?" • "+n.district:"")+" • "+date(n.created_at),"muted"));c.appendChild(b);c.onclick=()=>openArticle(n);return c}
+function renderNews(){const list=filtered();$("newsGrid").innerHTML="";$("newsCount").textContent="মোট "+list.length+"টি";if(!list.length){$("newsGrid").appendChild(el("div","এই নির্বাচনে কোনো প্রকাশিত সংবাদ পাওয়া যায়নি।","empty"));return}list.forEach(n=>$("newsGrid").appendChild(card(n)))}
+function renderTicker(){const track=$("ticker");track.innerHTML="";let breaking=rows.filter(n=>n.published&&n.is_breaking).map(n=>n.title);if(!breaking.length)breaking=["এই মুহূর্তে কোনো ব্রেকিং নিউজ নেই"];[...breaking,...breaking].forEach(t=>track.appendChild(el("span",t)))}
+function renderLead(){const published=rows.filter(n=>n.published);const lead=published[0],subs=published.slice(1,4);const box=$("leadLayout");if(!lead){box.querySelector(".lead").innerHTML='<div class="leadtext"><h2>এখনো কোনো সংবাদ প্রকাশিত হয়নি</h2></div>';box.querySelector(".subleads").innerHTML="";$("popular").textContent="সংবাদ নেই";return}const l=box.querySelector(".lead");l.innerHTML="";if(lead.image_url){const im=document.createElement("img");im.src=lead.image_url;im.alt=lead.title;l.appendChild(im)}const tx=document.createElement("div");tx.className="leadtext";tx.appendChild(el("span",lead.category||"জাতীয়","tag"));tx.appendChild(el("h2",lead.title));tx.appendChild(el("small",date(lead.created_at)));l.appendChild(tx);l.onclick=()=>openArticle(lead);const sub=box.querySelector(".subleads");sub.innerHTML="";subs.forEach(n=>{const a=document.createElement("article");a.className="sublead";if(n.image_url){const im=document.createElement("img");im.src=n.image_url;a.appendChild(im)}const d=document.createElement("div");d.appendChild(el("span",n.category||"সংবাদ","tag"));d.appendChild(el("h3",n.title));d.appendChild(el("small",date(n.created_at),"muted"));a.appendChild(d);a.onclick=()=>openArticle(n);sub.appendChild(a)});$("popular").innerHTML="";published.slice(0,5).forEach((n,i)=>{const a=document.createElement("article");a.appendChild(el("b",String(i+1),"rank"));if(n.image_url){const im=document.createElement("img");im.src=n.image_url;a.appendChild(im)}a.appendChild(el("span",n.title));a.onclick=()=>openArticle(n);a.style.cursor="pointer";$("popular").appendChild(a)})}
+$("tickerPause").onclick=()=>{tickerPaused=!tickerPaused;$("ticker").classList.toggle("paused",tickerPaused);$("tickerPause").textContent=tickerPaused?"চালু করুন":"থামান"};
+$("closeModal").onclick=()=>$("modal").classList.remove("open");
+$("modal").onclick=e=>{if(e.target===$("modal"))$("modal").classList.remove("open")};
+async function load(){try{const {data,error}=await db.from("news").select("id,title,content,image_url,category,published,created_at,division,district,is_breaking").eq("published",true).order("created_at",{ascending:false});if(error)throw error;rows=data||[];renderTicker();renderLead();renderNews()}catch(e){$("newsGrid").innerHTML="";$("newsGrid").appendChild(el("div","সংবাদ লোড করা যায়নি: "+e.message,"empty"));console.error(e)}}
+renderDivisions();
+load();
+</script>
+</body>
+                                                                     </html>
