@@ -9,7 +9,7 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f1f3f7;color:#222;font-family:Arial,sans-serif}
-header{background:#a90018;color:white;text-align:center;padding:22px 12px}
+header{background:#a90018;color:white;text-align:center;padding:24px 12px}
 header h2{margin:0 0 8px}
 header p{margin:0;font-size:14px}
 .container{max-width:850px;margin:25px auto;padding:12px}
@@ -18,14 +18,15 @@ h3{color:#a90018;margin-top:0}
 label{display:block;margin-top:14px;font-weight:bold}
 input{width:100%;padding:14px;margin-top:7px;border:1px solid #ddd;border-radius:8px;font-size:16px}
 button{background:#b0001b;color:white;border:0;border-radius:8px;padding:13px 20px;font-size:15px;cursor:pointer}
-button:disabled{opacity:.6}
+button:disabled{opacity:.6;cursor:not-allowed}
 #loginBtn{width:100%;margin-top:20px}
 .hidden{display:none!important}
-.message{font-size:14px;line-height:1.6;margin-top:12px}
+.message{font-size:14px;line-height:1.7;margin-top:12px;overflow-wrap:anywhere}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
 .tile{background:white;border-radius:12px;padding:22px;text-align:center;box-shadow:0 3px 12px #0001}
 .tile strong{display:block;color:#a90018;font-size:18px;margin-bottom:8px}
 .small{font-size:13px;color:#666;line-height:1.7}
+footer{text-align:center;color:#777;font-size:13px;padding:20px}
 </style>
 </head>
 <body>
@@ -43,22 +44,24 @@ button:disabled{opacity:.6}
 
 <form id="loginForm">
 <label for="email">ইমেইল</label>
-<input id="email" type="email" placeholder="আপনার ইমেইল লিখুন" required>
+<input id="email" type="email" placeholder="আপনার ইমেইল লিখুন" required autocomplete="username">
 
 <label for="password">পাসওয়ার্ড</label>
-<input id="password" type="password" placeholder="আপনার পাসওয়ার্ড লিখুন" required>
+<input id="password" type="password" placeholder="আপনার পাসওয়ার্ড লিখুন" required autocomplete="current-password">
 
 <button id="loginBtn" type="submit">লগইন করুন</button>
 </form>
 
 <p class="message" id="message" role="status"></p>
-<p class="small">লগইন করতে আগে Supabase-এ অ্যাডমিন অ্যাকাউন্ট তৈরি থাকতে হবে।</p>
+<p class="small">লগইন করতে আগে Supabase-এ অ্যাকাউন্ট তৈরি থাকতে হবে।</p>
 </section>
 
 <section id="dashboard" class="hidden">
+
 <div class="card">
 <h3>স্বাগতম, অ্যাডমিন!</h3>
 <p>বাংলাদেশ সুপার নিউজ পরিচালনা ড্যাশবোর্ড।</p>
+<p id="adminEmail" class="small"></p>
 <button id="logoutBtn">লগআউট</button>
 </div>
 
@@ -67,14 +70,17 @@ button:disabled{opacity:.6}
 <strong>📰 সংবাদ প্রকাশ</strong>
 <span>নতুন সংবাদ যোগ</span>
 </div>
+
 <div class="tile">
 <strong>✏️ সংবাদ সম্পাদনা</strong>
 <span>সংবাদ পরিবর্তন</span>
 </div>
+
 <div class="tile">
 <strong>🚨 ব্রেকিং নিউজ</strong>
 <span>ব্রেকিং নিউজ পরিচালনা</span>
 </div>
+
 <div class="tile">
 <strong>📍 বিভাগ ও জেলা</strong>
 <span>এলাকাভিত্তিক সংবাদ</span>
@@ -82,16 +88,19 @@ button:disabled{opacity:.6}
 </div>
 
 <div class="card" style="margin-top:20px">
-<p class="small">এটি প্রাথমিক ড্যাশবোর্ড। সংবাদ প্রকাশ, সম্পাদনা ও ব্রেকিং নিউজ পরিচালনার সুবিধা পরবর্তী ধাপে ডেটাবেসের সঙ্গে যুক্ত করা হবে।</p>
+<p class="small">
+এটি প্রাথমিক ড্যাশবোর্ড। সংবাদ প্রকাশ, সম্পাদনা ও ব্রেকিং নিউজ পরিচালনার সুবিধা পরবর্তী ধাপে ডেটাবেসের সঙ্গে যুক্ত করা হবে।
+</p>
 </div>
-</section>
 
+</section>
 </main>
+
+<footer>© <span id="year"></span> বাংলাদেশ সুপার নিউজ</footer>
 
 <script>
 const SUPABASE_URL = "https://ousmshqqmudffvnxufhp.supabase.co";
 
-// এখানে Supabase-এর Publishable key অথবা পুরোনো anon public key বসান।
 const SUPABASE_ANON_KEY = "sb_publishable_QPh6xZEXnjRB8M0B0F4fKw_HXlXLr4c";
 
 const loginBox = document.getElementById("loginBox");
@@ -99,26 +108,33 @@ const dashboard = document.getElementById("dashboard");
 const message = document.getElementById("message");
 const loginBtn = document.getElementById("loginBtn");
 
+document.getElementById("year").textContent = new Date().getFullYear();
+
 let client = null;
+let authReady = false;
 
 function showLogin() {
   dashboard.classList.add("hidden");
   loginBox.classList.remove("hidden");
 }
 
-function showDashboard() {
+function showDashboard(session) {
   loginBox.classList.add("hidden");
   dashboard.classList.remove("hidden");
+
+  document.getElementById("adminEmail").textContent =
+    session.user.email || "";
 }
 
 function initialize() {
   if (!window.supabase) {
-    message.textContent = "Supabase লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।";
+    message.textContent =
+      "Supabase লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করে পেজ রিফ্রেশ করুন।";
     return;
   }
 
-  if (SUPABASE_ANON_KEY.includes("এখানে_")) {
-    message.textContent = "প্রথমে Supabase-এর Public key বসাতে হবে।";
+  if (!SUPABASE_ANON_KEY.startsWith("sb_publishable_")) {
+    message.textContent = "Supabase Public Key সঠিক নয়।";
     return;
   }
 
@@ -128,69 +144,99 @@ function initialize() {
   );
 
   client.auth.onAuthStateChange((event, session) => {
+    if (!authReady) return;
+
     if (session) {
-      showDashboard();
+      showDashboard(session);
     } else {
       showLogin();
     }
   });
 
   client.auth.getSession().then(({data, error}) => {
+    authReady = true;
+
     if (error) {
-      message.textContent = "সেশন পরীক্ষা করা যায়নি: " + error.message;
+      message.textContent =
+        "সেশন পরীক্ষা করতে সমস্যা হয়েছে: " + error.message;
       return;
     }
-    if (data.session) showDashboard();
+
+    if (data.session) {
+      showDashboard(data.session);
+    } else {
+      showLogin();
+    }
+  }).catch(error => {
+    authReady = true;
+    message.textContent = "সমস্যা হয়েছে: " + error.message;
   });
 }
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
   if (!client) {
-    initialize();
-    if (!client) return;
+    message.textContent = "Supabase প্রস্তুত হচ্ছে। একটু অপেক্ষা করুন।";
+    return;
   }
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
   loginBtn.disabled = true;
   loginBtn.textContent = "লগইন হচ্ছে...";
   message.textContent = "";
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+  try {
+    const {data, error} = await client.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
 
-  const {data, error} = await client.auth.signInWithPassword({
-    email,
-    password
-  });
+    if (error) {
+      message.textContent = "লগইন হয়নি: " + error.message;
+      return;
+    }
 
-  loginBtn.disabled = false;
-  loginBtn.textContent = "লগইন করুন";
+    if (data.session) {
+      showDashboard(data.session);
+      message.textContent = "";
+    }
 
-  if (error) {
-    message.textContent = "লগইন হয়নি: " + error.message;
-    return;
-  }
-
-  if (data.session) {
-    showDashboard();
+  } catch (error) {
+    message.textContent = "সমস্যা হয়েছে: " + error.message;
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.textContent = "লগইন করুন";
   }
 });
 
-document.getElementById("logoutBtn").addEventListener("click", async () => {
+document.getElementById("logoutBtn").addEventListener("click", async function() {
   if (!client) return;
-  const {error} = await client.auth.signOut();
 
-  if (error) {
-    alert("লগআউট সমস্যা: " + error.message);
-    return;
+  const button = this;
+  button.disabled = true;
+
+  try {
+    const {error} = await client.auth.signOut();
+
+    if (error) {
+      alert("লগআউট সমস্যা: " + error.message);
+    } else {
+      showLogin();
+      document.getElementById("password").value = "";
+    }
+  } catch (error) {
+    alert("সমস্যা হয়েছে: " + error.message);
+  } finally {
+    button.disabled = false;
   }
-
-  showLogin();
 });
 
 initialize();
 </script>
 
 </body>
-</html>
+  </html>
+  
