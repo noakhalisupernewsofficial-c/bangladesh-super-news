@@ -1,436 +1,732 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>অ্যাডমিন প্যানেল | বাংলাদেশ সুপার নিউজ</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>অ্যাডমিন ড্যাশবোর্ড | বাংলাদেশ সুপার নিউজ</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f1f3f7;color:#222;font-family:Arial,sans-serif}
-header{background:#a90018;color:white;text-align:center;padding:22px 12px}
-header h2{margin:0 0 8px}
-header p{margin:0}
-.container{max-width:950px;margin:22px auto;padding:12px}
-.card{background:white;padding:20px;border-radius:12px;box-shadow:0 3px 14px #0001;margin-bottom:18px}
-h3{color:#a90018;margin-top:0}
-label{display:block;margin-top:14px;font-weight:bold}
-input,textarea,select{width:100%;padding:12px;margin-top:7px;border:1px solid #ddd;border-radius:7px;font-size:16px}
-textarea{min-height:150px;resize:vertical}
-button{background:#a90018;color:white;border:0;border-radius:7px;padding:11px 15px;font-size:14px;cursor:pointer;margin:5px 3px 5px 0}
-button:disabled{opacity:.5}
-.secondary{background:#555}
-.green{background:#16834a}
-.red{background:#b00020}
+body{margin:0;background:#f1f5f2;color:#202b24;font-family:"Noto Sans Bengali",sans-serif;line-height:1.65}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:8px;padding:10px 16px;background:#086238;color:white;font-weight:700}
+button:disabled{opacity:.55;cursor:not-allowed}
+button:hover:not(:disabled){filter:brightness(.94)}
+.secondary{background:#59675f}
+.danger{background:#bd263b}
+.warning{background:#b87513}
 .hidden{display:none!important}
-.message{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
-.small{font-size:13px;color:#666;line-height:1.6}
-.news-item{border:1px solid #ddd;border-radius:10px;padding:14px;margin:12px 0}
-.news-item h4{margin:0 0 8px}
-.news-item img{width:100%;max-width:220px;max-height:140px;object-fit:cover;border-radius:7px;margin-top:8px}
-.status{font-size:13px;font-weight:bold}
-footer{text-align:center;color:#777;font-size:13px;padding:20px}
+header{background:linear-gradient(120deg,#064b2b,#087443);color:white;padding:18px 4%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:8px;background:white;color:#086238;display:grid;place-items:center;font-size:21px;font-weight:800}
+header h1{font-size:19px;margin:0}
+header p{font-size:12px;margin:2px 0 0;color:#d9eee1}
+.wrap{width:min(1100px,94%);margin:22px auto}
+.card{background:white;border:1px solid #e0e9e2;border-radius:13px;padding:19px;margin-bottom:17px;box-shadow:0 3px 14px #12351d09}
+h2{font-size:19px;color:#075b34;margin:0 0 14px}
+h3{font-size:16px;margin:0 0 10px}
+label{display:block;font-weight:700;font-size:14px;margin:12px 0 5px}
+input:not([type=checkbox]),textarea,select{width:100%;padding:11px 12px;border:1px solid #d7e2d9;border-radius:8px;background:white;color:#202b24;outline:none}
+input:focus,textarea:focus,select:focus{border-color:#16834a;box-shadow:0 0 0 3px #16834a16}
+textarea{min-height:190px;resize:vertical}
+input[type=checkbox]{width:18px;height:18px;vertical-align:middle;accent-color:#087443}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{padding:17px;border-radius:10px;background:#edf6ef;border:1px solid #dcebe0}
+.stat strong{display:block;font-size:27px;color:#087443}
+.stat span{font-size:13px;color:#52635a}
+.hint{font-size:12px;color:#68776e}
+.msg{font-size:14px;overflow-wrap:anywhere;margin:10px 0}
+.success{color:#087443}
+.error{color:#bd263b}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}
+.toolbar input,.toolbar select{flex:1;min-width:150px}
+.item{border:1px solid #e0e8e2;border-radius:10px;padding:14px;margin:12px 0}
+.item h3{color:#174b30}
+.item img{max-width:170px;max-height:120px;object-fit:cover;border-radius:7px;display:block;margin:10px 0}
+.tag{display:inline-block;border-radius:20px;padding:3px 9px;background:#edf4ef;font-size:12px;margin:3px}
+.tag.red{background:#fff0f0;color:#b32639}
+.preview{max-width:230px;max-height:150px;object-fit:contain;display:block;margin:10px 0;border-radius:8px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.actions button{font-size:13px;padding:8px 11px}
+#loginCard{max-width:470px;margin:50px auto}
+footer{text-align:center;color:#748078;font-size:12px;padding:20px}
+@media(max-width:650px){
+ .row{grid-template-columns:1fr}
+ .stats{grid-template-columns:1fr 1fr}
+ header h1{font-size:16px}
+ .card{padding:15px}
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<h2>বাংলাদেশ সুপার নিউজ</h2>
-<p>সত্যের পথে, দেশের সাথে।</p>
+ <div class="brand">
+  <div class="logo">BSN</div>
+  <div>
+   <h1>বাংলাদেশ সুপার নিউজ</h1>
+   <p>অ্যাডমিন কন্ট্রোল প্যানেল</p>
+  </div>
+ </div>
+ <a href="https://noakhalisupernewsofficial-c.github.io/bangladesh-super-news/" target="_blank" style="color:white;font-size:13px">মূল ওয়েবসাইট ↗</a>
 </header>
 
-<main class="container">
+<main class="wrap">
 
-<section class="card" id="loginBox">
-<h3>🔐 অ্যাডমিন লগইন</h3>
-<form id="loginForm">
-<label>ইমেইল</label>
-<input id="email" type="email" required autocomplete="username">
-<label>পাসওয়ার্ড</label>
-<input id="password" type="password" required autocomplete="current-password">
-<button id="loginBtn" type="submit">লগইন করুন</button>
-</form>
-<p id="loginMessage" class="message"></p>
+<section class="card" id="loginCard">
+ <h2>অ্যাডমিন লগইন</h2>
+ <form id="loginForm">
+  <label for="email">ইমেইল</label>
+  <input id="email" type="email" autocomplete="username" required>
+  <label for="password">পাসওয়ার্ড</label>
+  <input id="password" type="password" autocomplete="current-password" required>
+  <button id="loginBtn" style="width:100%;margin-top:16px">লগইন করুন</button>
+ </form>
+ <p id="loginMsg" class="msg"></p>
 </section>
 
 <section id="dashboard" class="hidden">
-<div class="card">
-<h3>স্বাগতম, অ্যাডমিন!</h3>
-<p id="adminEmail" class="small"></p>
-<button id="logoutBtn">লগআউট</button>
-</div>
 
-<div class="card" id="editorCard">
-<h3 id="editorTitle">📰 নতুন সংবাদ প্রকাশ</h3>
+ <div class="card">
+  <h2>ড্যাশবোর্ড</h2>
+  <p id="who" class="hint"></p>
+  <div class="stats">
+   <div class="stat"><strong id="totalCount">০</strong><span>মোট সংবাদ</span></div>
+   <div class="stat"><strong id="publishedCount">০</strong><span>প্রকাশিত সংবাদ</span></div>
+   <div class="stat"><strong id="draftCount">০</strong><span>খসড়া সংবাদ</span></div>
+  </div>
+  <div class="toolbar">
+   <button id="logout" class="secondary">লগআউট</button>
+   <button id="refresh" class="secondary">তালিকা রিফ্রেশ</button>
+   <a href="https://noakhalisupernewsofficial-c.github.io/bangladesh-super-news/" target="_blank">
+    <button type="button">ওয়েবসাইট দেখুন</button>
+   </a>
+  </div>
+ </div>
 
-<form id="newsForm">
-<input type="hidden" id="newsId">
+ <div class="card">
+  <h2 id="formTitle">নতুন সংবাদ লিখুন</h2>
+  <form id="newsForm">
+   <input id="newsId" type="hidden">
 
-<label>সংবাদের শিরোনাম</label>
-<input id="title" type="text" maxlength="250" required placeholder="সংবাদের শিরোনাম লিখুন">
+   <label for="title">সংবাদের শিরোনাম *</label>
+   <input id="title" maxlength="250" required placeholder="সংবাদের শিরোনাম লিখুন">
 
-<label>সংবাদের বিভাগ</label>
-<select id="category" required>
-<option value="">বিভাগ নির্বাচন করুন</option>
-<option value="জাতীয়">জাতীয়</option>
-<option value="রাজনীতি">রাজনীতি</option>
-<option value="সারাদেশ">সারাদেশ</option>
-<option value="আন্তর্জাতিক">আন্তর্জাতিক</option>
-<option value="খেলাধুলা">খেলাধুলা</option>
-<option value="প্রযুক্তি">প্রযুক্তি</option>
-<option value="বিনোদন">বিনোদন</option>
-<option value="শিক্ষা">শিক্ষা</option>
-<option value="অর্থনীতি">অর্থনীতি</option>
-<option value="অন্যান্য">অন্যান্য</option>
-</select>
+   <div class="row">
+    <div>
+     <label for="category">সংবাদ বিভাগ *</label>
+     <select id="category" required>
+      <option value="">বিভাগ নির্বাচন করুন</option>
+      <option>জাতীয়</option>
+      <option>রাজনীতি</option>
+      <option>সারাদেশ</option>
+      <option>অর্থনীতি</option>
+      <option>আন্তর্জাতিক</option>
+      <option>খেলাধুলা</option>
+      <option>বিনোদন</option>
+      <option>প্রযুক্তি</option>
+      <option>শিক্ষা</option>
+      <option>অন্যান্য</option>
+     </select>
+    </div>
+    <div>
+     <label for="published">সংবাদ প্রকাশের অবস্থা</label>
+     <select id="published">
+      <option value="true">এখনই প্রকাশ করুন</option>
+      <option value="false">খসড়া হিসেবে রাখুন</option>
+     </select>
+    </div>
+   </div>
 
-<label>সংবাদের বিস্তারিত</label>
-<textarea id="content" required placeholder="সম্পূর্ণ সংবাদ লিখুন"></textarea>
+   <h3 style="margin-top:18px">সংবাদের স্থান নির্বাচন</h3>
+   <p class="hint">সংবাদটি বাংলাদেশের কোন বিভাগ ও জেলার, সেটি নির্বাচন করুন।</p>
 
-<label>সংবাদের ছবি (ঐচ্ছিক)</label>
-<input id="imageFile" type="file" accept="image/*">
-<p class="small" id="imageHelp">ছবি না দিলে আগের ছবিটি অপরিবর্তিত থাকবে।</p>
+   <div class="row">
+    <div>
+     <label for="division">বাংলাদেশের ৮টি বিভাগ</label>
+     <select id="division">
+      <option value="">বিভাগ নির্বাচন করুন</option>
+     </select>
+    </div>
+    <div>
+     <label for="district">জেলা</label>
+     <select id="district" disabled>
+      <option value="">প্রথমে বিভাগ নির্বাচন করুন</option>
+     </select>
+    </div>
+   </div>
 
-<label>প্রকাশের অবস্থা</label>
-<select id="published">
-<option value="false">খসড়া হিসেবে সংরক্ষণ</option>
-<option value="true">ওয়েবসাইটে প্রকাশ</option>
-</select>
+   <label for="content">সম্পূর্ণ সংবাদ লিখুন *</label>
+   <textarea id="content" required placeholder="এখানে সম্পূর্ণ সংবাদ লিখুন..."></textarea>
 
-<button id="saveBtn" type="submit">সংবাদ সংরক্ষণ করুন</button>
-<button type="button" class="secondary hidden" id="cancelEdit">সম্পাদনা বাতিল</button>
-<p id="formMessage" class="message"></p>
-</form>
-</div>
+   <h3 style="margin-top:18px">সংবাদের ছবি</h3>
+   <label for="image">ছবি নির্বাচন করুন</label>
+   <input id="image" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+   <p class="hint">সর্বোচ্চ ৫ MB। ছবি না দিলে আগের ছবিটি থাকবে।</p>
+   <img id="imagePreview" class="preview hidden" alt="ছবির প্রিভিউ">
+   <button type="button" id="removeNewImage" class="secondary hidden">নতুন নির্বাচিত ছবি বাতিল</button>
 
-<div class="card">
-<h3>📋 প্রকাশিত ও সংরক্ষিত সংবাদ</h3>
-<button id="refreshBtn" class="secondary">তালিকা রিফ্রেশ করুন</button>
-<p id="listMessage" class="message"></p>
-<div id="newsList"></div>
-</div>
+   <div style="background:#fff6f0;border:1px solid #f2dfd2;padding:13px;border-radius:9px;margin-top:18px">
+    <label style="margin:0">
+     <input id="breaking" type="checkbox">
+     <span style="color:#b32639">ব্রেকিং নিউজ হিসেবে প্রকাশ করুন</span>
+    </label>
+    <p class="hint">এটি চালু করলে সংবাদে ব্রেকিং নিউজ চিহ্ন যুক্ত হবে।</p>
+   </div>
+
+   <div class="toolbar" style="margin-top:18px">
+    <button id="saveBtn">সংবাদ সংরক্ষণ করুন</button>
+    <button type="button" id="cancel" class="secondary hidden">সম্পাদনা বাতিল</button>
+   </div>
+   <p id="formMsg" class="msg"></p>
+  </form>
+ </div>
+
+ <div class="card">
+  <h2>প্রকাশিত ও খসড়া সংবাদ পরিচালনা</h2>
+  <div class="toolbar">
+   <input id="search" placeholder="শিরোনাম বা সংবাদ খুঁজুন">
+   <select id="filterCategory">
+    <option value="">সব বিভাগ</option>
+    <option>জাতীয়</option><option>রাজনীতি</option><option>সারাদেশ</option>
+    <option>অর্থনীতি</option><option>আন্তর্জাতিক</option><option>খেলাধুলা</option>
+    <option>বিনোদন</option><option>প্রযুক্তি</option><option>শিক্ষা</option><option>অন্যান্য</option>
+   </select>
+  </div>
+  <div class="toolbar">
+   <select id="filterDivision"><option value="">সব বিভাগ</option></select>
+   <select id="filterStatus">
+    <option value="">সব অবস্থা</option>
+    <option value="true">প্রকাশিত</option>
+    <option value="false">খসড়া</option>
+   </select>
+   <select id="filterBreaking">
+    <option value="">সব সংবাদ</option>
+    <option value="true">শুধু ব্রেকিং নিউজ</option>
+    <option value="false">ব্রেকিং নয়</option>
+   </select>
+  </div>
+  <p id="listMsg" class="msg"></p>
+  <div id="list"></div>
+ </div>
+
 </section>
 </main>
 
-<footer>© <span id="year"></span> বাংলাদেশ সুপার নিউজ</footer>
+<footer>বাংলাদেশ সুপার নিউজ | সত্যের পথে, মানুষ ও দেশের সাথে</footer>
 
 <script>
-const SUPABASE_URL = "https://ousmshqqmudffvnxufhp.supabase.co";
-const SUPABASE_KEY = "sb_publishable_QPh6xZEXnjRB8M0B0F4fKw_HXlXLr4c";
+"use strict";
 
-const $ = id => document.getElementById(id);
-let client = null;
-let currentSession = null;
-let newsCache = [];
-let checking = false;
+/* Supabase connection */
+const SUPABASE_URL="https://ousmshqqmudffvnxufhp.supabase.co";
+const SUPABASE_KEY="sb_publishable_QPh6xZEXnjRB8M0B0F4fKw_HXlXLr4c";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
 
-$("year").textContent = new Date().getFullYear();
+const areas={
+"ঢাকা":["ঢাকা","গাজীপুর","নারায়ণগঞ্জ","নরসিংদী","টাঙ্গাইল","কিশোরগঞ্জ","মানিকগঞ্জ","মুন্সিগঞ্জ","মাদারীপুর","শরীয়তপুর","গোপালগঞ্জ","ফরিদপুর","রাজবাড়ী"],
+"চট্টগ্রাম":["চট্টগ্রাম","কুমিল্লা","ফেনী","নোয়াখালী","লক্ষ্মীপুর","চাঁদপুর","ব্রাহ্মণবাড়িয়া","রাঙামাটি","বান্দরবান","খাগড়াছড়ি","কক্সবাজার"],
+"রাজশাহী":["রাজশাহী","বগুড়া","জয়পুরহাট","নওগাঁ","নাটোর","চাঁপাইনবাবগঞ্জ","পাবনা","সিরাজগঞ্জ"],
+"খুলনা":["খুলনা","বাগেরহাট","সাতক্ষীরা","যশোর","নড়াইল","মাগুরা","ঝিনাইদহ","কুষ্টিয়া","চুয়াডাঙ্গা","মেহেরপুর"],
+"বরিশাল":["বরিশাল","ভোলা","পটুয়াখালী","পিরোজপুর","বরগুনা","ঝালকাঠি"],
+"সিলেট":["সিলেট","মৌলভীবাজার","হবিগঞ্জ","সুনামগঞ্জ"],
+"রংপুর":["রংপুর","দিনাজপুর","গাইবান্ধা","কুড়িগ্রাম","লালমনিরহাট","নীলফামারী","পঞ্চগড়","ঠাকুরগাঁও"],
+"ময়মনসিংহ":["ময়মনসিংহ","জামালপুর","নেত্রকোণা","শেরপুর"]
+};
 
-function showLogin(msg=""){
-  $("dashboard").classList.add("hidden");
-  $("loginBox").classList.remove("hidden");
-  $("loginMessage").textContent = msg;
+let session=null;
+let cache=[];
+let busy=false;
+let currentPreviewURL=null;
+let authCheckNumber=0;
+
+/* Division options */
+function addDivisionOptions(select,allLabel){
+ select.innerHTML="";
+ if(allLabel){
+  const first=document.createElement("option");
+  first.value="";
+  first.textContent=allLabel;
+  select.appendChild(first);
+ }
+ Object.keys(areas).forEach(name=>{
+  const option=document.createElement("option");
+  option.value=name;
+  option.textContent=name;
+  select.appendChild(option);
+ });
+}
+addDivisionOptions($("division"),"বিভাগ নির্বাচন করুন");
+addDivisionOptions($("filterDivision"),"সব বিভাগ");
+
+function districtsFor(division,selected=""){
+ const select=$("district");
+ select.innerHTML='<option value="">জেলা নির্বাচন করুন</option>';
+ if(!division||!areas[division]){
+  select.disabled=true;
+  return;
+ }
+ areas[division].forEach(name=>{
+  const option=document.createElement("option");
+  option.value=name;
+  option.textContent=name;
+  select.appendChild(option);
+ });
+ select.disabled=false;
+ select.value=selected;
+}
+$("division").addEventListener("change",()=>{
+ districtsFor($("division").value);
+});
+
+/* Safe messages */
+function message(id,text,type=""){
+ $(id).textContent=text;
+ $(id).className="msg "+type;
 }
 
-function showDashboard(session){
-  $("loginBox").classList.add("hidden");
-  $("dashboard").classList.remove("hidden");
-  $("adminEmail").textContent = session.user.email || "";
+/* Authentication */
+function showLogin(text=""){
+ $("dashboard").classList.add("hidden");
+ $("loginCard").classList.remove("hidden");
+ message("loginMsg",text);
 }
 
-async function verifyAdmin(session){
-  if(!client || !session) return false;
-  if(checking) return false;
-  checking = true;
+async function verifyUser(user){
+ const check=++authCheckNumber;
 
-  try{
-    const {data,error} = await client
-      .from("admin_users")
-      .select("user_id")
-      .eq("user_id",session.user.id)
-      .maybeSingle();
+ if(!user){
+  session=null;
+  showLogin();
+  return false;
+ }
 
-    if(error || !data){
-      showLogin(error ? "অ্যাডমিন যাচাই করা যায়নি।" : "আপনি অনুমোদিত অ্যাডমিন নন।");
-      await client.auth.signOut();
-      return false;
-    }
+ const {data,error}=await db.from("admin_users")
+  .select("user_id")
+  .eq("user_id",user.id)
+  .maybeSingle();
 
-    currentSession = session;
-    showDashboard(session);
-    await loadNews();
-    return true;
-  }catch(error){
-    showLogin("যাচাই সমস্যা: " + error.message);
-    return false;
-  }finally{
-    checking = false;
-  }
+ if(check!==authCheckNumber)return false;
+
+ if(error||!data){
+  session=null;
+  await db.auth.signOut();
+  showLogin(error?"অ্যাডমিন যাচাই ব্যর্থ: "+error.message:"এই অ্যাকাউন্ট অ্যাডমিন হিসেবে অনুমোদিত নয়।");
+  return false;
+ }
+
+ session={user};
+ $("loginCard").classList.add("hidden");
+ $("dashboard").classList.remove("hidden");
+ $("who").textContent="লগইন করা অ্যাডমিন: "+(user.email||"");
+ await loadNews();
+ return true;
 }
 
-async function initialize(){
-  if(!window.supabase){
-    showLogin("Supabase লোড হয়নি। ইন্টারনেট পরীক্ষা করুন।");
-    return;
+async function init(){
+ const {data,error}=await db.auth.getSession();
+ if(error){
+  showLogin(error.message);
+  return;
+ }
+ await verifyUser(data.session?.user||null);
+
+ db.auth.onAuthStateChange((event,newSession)=>{
+  if(event==="SIGNED_OUT"){
+   session=null;
+   showLogin();
+   return;
   }
-
-  client = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-
-  client.auth.onAuthStateChange((event,session)=>{
-    setTimeout(()=>{
-      if(session) verifyAdmin(session);
-      else{
-        currentSession = null;
-        showLogin();
-      }
-    },0);
-  });
-
-  const {data,error} = await client.auth.getSession();
-  if(error){
-    showLogin("সেশন পরীক্ষা করা যায়নি।");
-    return;
+  if(newSession?.user){
+   verifyUser(newSession.user);
   }
-  if(data.session) await verifyAdmin(data.session);
-  else showLogin();
+ });
 }
 
 $("loginForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  $("loginBtn").disabled = true;
-  $("loginMessage").textContent = "যাচাই হচ্ছে...";
+ e.preventDefault();
+ $("loginBtn").disabled=true;
+ message("loginMsg","লগইন হচ্ছে...");
 
-  try{
-    const {data,error} = await client.auth.signInWithPassword({
-      email:$("email").value.trim(),
-      password:$("password").value
-    });
-    if(error){
-      $("loginMessage").textContent = "লগইন হয়নি: " + error.message;
-    }else if(data.session){
-      await verifyAdmin(data.session);
-    }
-  }catch(error){
-    $("loginMessage").textContent = "সমস্যা: " + error.message;
-  }finally{
-    $("loginBtn").disabled = false;
-  }
+ const {data,error}=await db.auth.signInWithPassword({
+  email:$("email").value.trim(),
+  password:$("password").value
+ });
+
+ $("loginBtn").disabled=false;
+
+ if(error){
+  message("loginMsg","লগইন হয়নি: "+error.message,"error");
+  return;
+ }
+ await verifyUser(data.user);
 });
 
-$("logoutBtn").addEventListener("click",async()=>{
-  const {error} = await client.auth.signOut();
-  if(error) alert("লগআউট সমস্যা: " + error.message);
-  else{
-    $("password").value = "";
-    showLogin("সফলভাবে লগআউট হয়েছে।");
-  }
+$("logout").addEventListener("click",async()=>{
+ const {error}=await db.auth.signOut();
+ if(error){
+  alert("লগআউট সমস্যা: "+error.message);
+ }else{
+  session=null;
+  showLogin("সফলভাবে লগআউট হয়েছে।","success");
+ }
 });
 
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[char]);
+/* Image preview */
+function clearPreview(){
+ if(currentPreviewURL){
+  URL.revokeObjectURL(currentPreviewURL);
+  currentPreviewURL=null;
+ }
+ $("imagePreview").src="";
+ $("imagePreview").classList.add("hidden");
+ $("removeNewImage").classList.add("hidden");
 }
 
+$("image").addEventListener("change",()=>{
+ clearPreview();
+ const file=$("image").files[0];
+ if(!file)return;
+
+ if(!file.type.startsWith("image/")){
+  message("formMsg","শুধু ছবি নির্বাচন করুন।","error");
+  $("image").value="";
+  return;
+ }
+ if(file.size>5*1024*1024){
+  message("formMsg","ছবির আকার ৫ MB-এর বেশি।","error");
+  $("image").value="";
+  return;
+ }
+ currentPreviewURL=URL.createObjectURL(file);
+ $("imagePreview").src=currentPreviewURL;
+ $("imagePreview").classList.remove("hidden");
+ $("removeNewImage").classList.remove("hidden");
+});
+
+$("removeNewImage").addEventListener("click",()=>{
+ $("image").value="";
+ clearPreview();
+});
+
+/* Extract our own Storage image path */
+function storagePath(publicURL){
+ if(!publicURL)return null;
+ try{
+  const url=new URL(publicURL);
+  const marker="/storage/v1/object/public/news-images/";
+  const index=url.pathname.indexOf(marker);
+  if(index<0)return null;
+  return decodeURIComponent(url.pathname.slice(index+marker.length));
+ }catch(e){
+  return null;
+ }
+}
+
+async function removeStorageImage(publicURL){
+ const path=storagePath(publicURL);
+ if(!path)return;
+ const {error}=await db.storage.from("news-images").remove([path]);
+ if(error)throw error;
+}
+
+/* News loading */
 async function loadNews(){
-  $("listMessage").textContent = "সংবাদ তালিকা লোড হচ্ছে...";
-  const {data,error} = await client
-    .from("news")
-    .select("*")
-    .order("created_at",{ascending:false});
+ if(!session)return;
+ message("listMsg","সংবাদ লোড হচ্ছে...");
 
-  if(error){
-    $("listMessage").textContent = "সংবাদ লোড হয়নি: " + error.message;
-    return;
-  }
+ const {data,error}=await db.from("news")
+  .select("*")
+  .order("created_at",{ascending:false});
 
-  newsCache = data || [];
-  $("listMessage").textContent = newsCache.length
-    ? "মোট সংবাদ: " + newsCache.length
-    : "এখনো কোনো সংবাদ নেই।";
+ if(error){
+  message("listMsg","সংবাদ লোড হয়নি: "+error.message,"error");
+  return;
+ }
 
-  renderNews();
+ cache=data||[];
+ updateStats();
+ renderNews();
+}
+
+function updateStats(){
+ $("totalCount").textContent=cache.length;
+ $("publishedCount").textContent=cache.filter(n=>n.published).length;
+ $("draftCount").textContent=cache.filter(n=>!n.published).length;
+}
+
+/* Safe HTML output */
+function esc(value){
+ return String(value??"").replace(/[&<>"']/g,char=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[char]));
 }
 
 function renderNews(){
-  const list = $("newsList");
-  list.innerHTML = "";
+ const box=$("list");
+ box.innerHTML="";
 
-  newsCache.forEach(item=>{
-    const status = item.published
-      ? '<span class="status" style="color:green">প্রকাশিত</span>'
-      : '<span class="status" style="color:#b36b00">খসড়া</span>';
+ const q=$("search").value.trim().toLowerCase();
+ const cat=$("filterCategory").value;
+ const div=$("filterDivision").value;
+ const status=$("filterStatus").value;
+ const breaking=$("filterBreaking").value;
 
-    const image = item.image_url
-      ? '<img src="' + escapeHTML(item.image_url) + '" alt="সংবাদের ছবি">'
-      : "";
+ const filtered=cache.filter(n=>{
+  const text=(String(n.title||"")+" "+String(n.content||"")).toLowerCase();
+  if(q&&!text.includes(q))return false;
+  if(cat&&n.category!==cat)return false;
+  if(div&&n.division!==div)return false;
+  if(status!==""&&String(!!n.published)!==status)return false;
+  if(breaking!==""&&String(!!n.is_breaking)!==breaking)return false;
+  return true;
+ });
 
-    const article = document.createElement("div");
-    article.className = "news-item";
-    article.innerHTML = `
-      <h4>${escapeHTML(item.title)}</h4>
-      <p class="small">বিভাগ: ${escapeHTML(item.category || "অন্যান্য")} | ${status}</p>
-      ${image}
-      <p>${escapeHTML((item.content || "").slice(0,180))}${(item.content || "").length > 180 ? "..." : ""}</p>
-      <button data-action="edit" data-id="${item.id}">✏️ সম্পাদনা</button>
-      <button class="green" data-action="toggle" data-id="${item.id}">
-        ${item.published ? "অপ্রকাশ করুন" : "প্রকাশ করুন"}
-      </button>
-      <button class="red" data-action="delete" data-id="${item.id}">🗑️ ডিলিট</button>
-    `;
-    list.appendChild(article);
-  });
+ message("listMsg","দেখানো হচ্ছে "+filtered.length+"টি সংবাদ।");
+
+ if(!filtered.length){
+  box.textContent="কোনো সংবাদ পাওয়া যায়নি।";
+  return;
+ }
+
+ filtered.forEach(n=>{
+  const item=document.createElement("article");
+  item.className="item";
+
+  const heading=document.createElement("h3");
+  heading.textContent=n.title||"শিরোনাম নেই";
+  item.appendChild(heading);
+
+  const tags=document.createElement("div");
+  tags.innerHTML=
+   `<span class="tag">${esc(n.category)}</span>`+
+   `<span class="tag">${n.published?"প্রকাশিত":"খসড়া"}</span>`+
+   (n.is_breaking?'<span class="tag red">ব্রেকিং নিউজ</span>':"")+
+   (n.division?`<span class="tag">${esc(n.division)}</span>`:"")+
+   (n.district?`<span class="tag">${esc(n.district)}</span>`:"");
+  item.appendChild(tags);
+
+  if(n.image_url){
+   const img=document.createElement("img");
+   img.src=n.image_url;
+   img.alt="সংবাদের ছবি";
+   img.loading="lazy";
+   item.appendChild(img);
+  }
+
+  const content=document.createElement("p");
+  content.textContent=String(n.content||"").slice(0,180);
+  item.appendChild(content);
+
+  const actions=document.createElement("div");
+  actions.className="actions";
+  actions.innerHTML=`
+   <button data-action="edit" data-id="${esc(n.id)}">সম্পাদনা</button>
+   <button class="secondary" data-action="toggle" data-id="${esc(n.id)}">${n.published?"অপ্রকাশ করুন":"প্রকাশ করুন"}</button>
+   <button class="warning" data-action="breaking" data-id="${esc(n.id)}">${n.is_breaking?"ব্রেকিং বন্ধ":"ব্রেকিং চালু"}</button>
+   <button class="danger" data-action="delete" data-id="${esc(n.id)}">ডিলিট</button>`;
+  item.appendChild(actions);
+  box.appendChild(item);
+ });
 }
 
+/* Filters */
+["search","filterCategory","filterDivision","filterStatus","filterBreaking"]
+ .forEach(id=>{
+  $(id).addEventListener(id==="search"?"input":"change",renderNews);
+ });
+
+/* Form reset */
 function resetForm(){
-  $("newsForm").reset();
-  $("newsId").value = "";
-  $("editorTitle").textContent = "📰 নতুন সংবাদ প্রকাশ";
-  $("saveBtn").textContent = "সংবাদ সংরক্ষণ করুন";
-  $("cancelEdit").classList.add("hidden");
-  $("formMessage").textContent = "";
-  $("imageHelp").textContent = "ছবি না দিলে আগের ছবিটি অপরিবর্তিত থাকবে।";
+ $("newsForm").reset();
+ $("newsId").value="";
+ districtsFor("");
+ clearPreview();
+ $("formTitle").textContent="নতুন সংবাদ লিখুন";
+ $("saveBtn").textContent="সংবাদ সংরক্ষণ করুন";
+ $("cancel").classList.add("hidden");
+ message("formMsg","");
 }
+$("cancel").addEventListener("click",resetForm);
 
-$("cancelEdit").addEventListener("click",resetForm);
-
+/* Save and update */
 $("newsForm").addEventListener("submit",async e=>{
-  e.preventDefault();
+ e.preventDefault();
+ if(!session){
+  message("formMsg","সেশন নেই। আবার লগইন করুন।","error");
+  return;
+ }
+ if(busy)return;
 
-  if(!currentSession){
-    $("formMessage").textContent = "আপনার সেশন নেই। আবার লগইন করুন।";
-    return;
+ const id=$("newsId").value;
+ const old=cache.find(n=>String(n.id)===String(id));
+ const file=$("image").files[0];
+
+ if(file&&(!file.type.startsWith("image/")||file.size>5*1024*1024)){
+  message("formMsg","ছবির ধরন বা আকার সঠিক নয়।","error");
+  return;
+ }
+
+ busy=true;
+ $("saveBtn").disabled=true;
+ message("formMsg","সংবাদ সংরক্ষণ হচ্ছে...");
+
+ let uploadedURL=null;
+
+ try{
+  let image_url=old?.image_url||null;
+
+  if(file){
+   const ext=(file.name.split(".").pop()||"jpg").replace(/[^a-z0-9]/gi,"")||"jpg";
+   const path=session.user.id+"/"+crypto.randomUUID()+"."+ext;
+
+   const {data,error}=await db.storage.from("news-images").upload(path,file,{
+    contentType:file.type,
+    upsert:false
+   });
+   if(error)throw error;
+
+   image_url=db.storage.from("news-images").getPublicUrl(data.path).data.publicUrl;
+   uploadedURL=image_url;
   }
 
-  const id = $("newsId").value;
-  const existing = newsCache.find(n=>String(n.id) === String(id));
-  const file = $("imageFile").files[0];
+  const record={
+   title:$("title").value.trim(),
+   content:$("content").value.trim(),
+   category:$("category").value,
+   division:$("division").value||null,
+   district:$("district").value||null,
+   image_url,
+   published:$("published").value==="true",
+   is_breaking:$("breaking").checked
+  };
 
-  $("saveBtn").disabled = true;
-  $("formMessage").textContent = "সংবাদ সংরক্ষণ হচ্ছে...";
-
-  try{
-    let imageUrl = existing?.image_url || null;
-
-    if(file){
-      if(!file.type.startsWith("image/")){
-        throw new Error("শুধু ছবির ফাইল নির্বাচন করুন।");
-      }
-      if(file.size > 5 * 1024 * 1024){
-        throw new Error("ছবির আকার ৫ MB-এর বেশি হতে পারবে না।");
-      }
-
-      const extension = file.name.split(".").pop().replace(/[^a-zA-Z0-9]/g,"") || "jpg";
-      const filePath = currentSession.user.id + "/" + crypto.randomUUID() + "." + extension;
-
-      const {error:uploadError} = await client.storage
-        .from("news-images")
-        .upload(filePath,file,{contentType:file.type,upsert:false});
-
-      if(uploadError) throw uploadError;
-
-      const {data:urlData} = client.storage
-        .from("news-images")
-        .getPublicUrl(filePath);
-
-      imageUrl = urlData.publicUrl;
-    }
-
-    const record = {
-      title:$("title").value.trim(),
-      content:$("content").value.trim(),
-      category:$("category").value,
-      image_url:imageUrl,
-      published:$("published").value === "true"
-    };
-
-    let result;
-    if(id){
-      result = await client.from("news").update(record).eq("id",id);
-    }else{
-      record.author_id = currentSession.user.id;
-      result = await client.from("news").insert(record);
-    }
-
-    if(result.error) throw result.error;
-
-    $("formMessage").textContent = id
-      ? "সংবাদ সফলভাবে আপডেট হয়েছে।"
-      : "সংবাদ সফলভাবে সংরক্ষণ হয়েছে।";
-
-    resetForm();
-    await loadNews();
-
-  }catch(error){
-    $("formMessage").textContent = "সংরক্ষণ করা যায়নি: " + error.message;
-  }finally{
-    $("saveBtn").disabled = false;
+  let result;
+  if(id){
+   result=await db.from("news").update(record).eq("id",id);
+  }else{
+   record.author_id=session.user.id;
+   result=await db.from("news").insert(record);
   }
+
+  if(result.error)throw result.error;
+
+  message("formMsg","সংবাদ সফলভাবে সংরক্ষণ হয়েছে।","success");
+
+  /* Old image cleanup after successful update */
+  if(file&&old?.image_url){
+   try{await removeStorageImage(old.image_url);}
+   catch(cleanError){console.warn("পুরোনো ছবি মুছতে পারেনি:",cleanError.message);}
+  }
+
+  uploadedURL=null;
+  resetForm();
+  await loadNews();
+
+ }catch(error){
+  /* If database save fails, clean up the newly uploaded image */
+  if(uploadedURL){
+   try{await removeStorageImage(uploadedURL);}
+   catch(cleanError){console.warn(cleanError);}
+  }
+  message("formMsg","সংরক্ষণ হয়নি: "+(error.message||"অজানা সমস্যা"),"error");
+ }finally{
+  busy=false;
+  $("saveBtn").disabled=false;
+ }
 });
 
-$("newsList").addEventListener("click",async e=>{
-  const button = e.target.closest("button[data-action]");
-  if(!button) return;
+/* Edit, publish, breaking and delete */
+$("list").addEventListener("click",async e=>{
+ const button=e.target.closest("button[data-action]");
+ if(!button||busy)return;
 
-  const id = button.dataset.id;
-  const action = button.dataset.action;
-  const item = newsCache.find(n=>String(n.id) === String(id));
-  if(!item) return;
+ const n=cache.find(x=>String(x.id)===button.dataset.id);
+ if(!n)return;
 
-  if(action === "edit"){
-    $("newsId").value = item.id;
-    $("title").value = item.title || "";
-    $("content").value = item.content || "";
-    $("category").value = item.category || "";
-    $("published").value = String(!!item.published);
-    $("editorTitle").textContent = "✏️ সংবাদ সম্পাদনা";
-    $("saveBtn").textContent = "পরিবর্তন সংরক্ষণ করুন";
-    $("cancelEdit").classList.remove("hidden");
-    $("imageHelp").textContent = "নতুন ছবি না দিলে আগের ছবিই থাকবে।";
-    $("formMessage").textContent = "সংবাদ সম্পাদনা করুন।";
-    $("editorCard").scrollIntoView({behavior:"smooth"});
-    return;
+ const action=button.dataset.action;
+
+ if(action==="edit"){
+  $("newsId").value=n.id;
+  $("title").value=n.title||"";
+  $("content").value=n.content||"";
+  $("category").value=n.category||"";
+  $("division").value=n.division||"";
+  districtsFor(n.division||"",n.district||"");
+  $("published").value=String(!!n.published);
+  $("breaking").checked=!!n.is_breaking;
+  $("image").value="";
+   clearPreview();
+
+  if(n.image_url){
+   $("imagePreview").src=n.image_url;
+   $("imagePreview").classList.remove("hidden");
   }
 
-  if(action === "delete"){
-    if(!confirm("আপনি কি নিশ্চিতভাবে এই সংবাদটি ডিলিট করতে চান?")) return;
+  $("formTitle").textContent="সংবাদ সম্পাদনা";
+  $("saveBtn").textContent="পরিবর্তন সংরক্ষণ";
+  $("cancel").classList.remove("hidden");
+  $("newsForm").scrollIntoView({behavior:"smooth"});
+  return;
+ }
 
-    button.disabled = true;
-    const {error} = await client.from("news").delete().eq("id",id);
-    if(error){
-      alert("ডিলিট করা যায়নি: " + error.message);
-      button.disabled = false;
-    }else{
-      alert("সংবাদ ডিলিট হয়েছে।");
-      resetForm();
-      await loadNews();
+ busy=true;
+ button.disabled=true;
+
+ try{
+  if(action==="delete"){
+   if(!confirm("এই সংবাদটি স্থায়ীভাবে মুছে ফেলবেন?"))return;
+
+   const {error}=await db.from("news").delete().eq("id",n.id);
+   if(error)throw error;
+
+   await loadNews();
+
+   if(n.image_url){
+    try{await removeStorageImage(n.image_url);}
+    catch(err){alert("সংবাদ মুছে গেছে, তবে ছবিটি Storage থেকে মুছতে পারিনি: "+err.message);}
+   }
+  }
+
+  if(action==="toggle"){
+   const newValue=!n.published;
+   if(!confirm(newValue?"সংবাদটি প্রকাশ করবেন?":"সংবাদটি অপ্রকাশ করবেন?"))return;
+
+   const {error}=await db.from("news")
+    .update({published:newValue})
+    .eq("id",n.id);
+   if(error)throw error;
+   await loadNews();
+  }
+
+  if(action==="breaking"){
+   const newValue=!n.is_breaking;
+   const {error}=await db.from("news")
+    .update({is_breaking:newValue})
+    .eq("id",n.id);
+   if(error)throw error;
+   await loadNews();
     }
-    return;
-  }
 
-  if(action === "toggle"){
-    const newStatus = !item.published;
-    if(!confirm(newStatus ? "এই সংবাদটি প্রকাশ করবেন?" : "এই সংবাদটি অপ্রকাশ করবেন?")) return;
-
-    button.disabled = true;
-    const {error} = await client
-      .from("news")
-      .update({published:newStatus})
-      .eq("id",id);
-
-    if(error){
-      alert("পরিবর্তন করা যায়নি: " + error.message);
-      button.disabled = false;
-    }else{
-      await loadNews();
-    }
-  }
+   }catch(error){
+  alert("কাজটি সম্পন্ন হয়নি: "+error.message);
+ }finally{
+  busy=false;
+  button.disabled=false;
+ }
 });
 
-$("refreshBtn").addEventListener("click",loadNews);
+$("refresh").addEventListener("click",loadNews);
 
-initialize();
+init();
 </script>
 </body>
 </html>
+
+   
